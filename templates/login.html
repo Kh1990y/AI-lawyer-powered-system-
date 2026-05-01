@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>تسجيل الدخول — نظام المحامي الذكي</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29 0%, #1a1a3e 50%, #0f2027 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        body::before {
+            content: '⚖️';
+            position: fixed;
+            font-size: 400px;
+            opacity: 0.03;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            user-select: none;
+        }
+        
+        .login-wrapper {
+            width: 100%;
+            max-width: 460px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 24px;
+            padding: 48px 40px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+        
+        .logo-area {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+        
+        .logo-area .icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #c9a227, #f0d060);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 32px rgba(201, 162, 39, 0.4);
+        }
+        
+        .logo-area h1 {
+            color: #f0d060;
+            font-size: 22px;
+            font-weight: 800;
+            margin: 0;
+        }
+        
+        .logo-area p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 13px;
+            margin: 4px 0 0;
+        }
+        
+        .form-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff !important;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 14px;
+            transition: all .3s;
+        }
+        
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: #c9a227;
+            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.2);
+            outline: none;
+        }
+        
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-login {
+            background: linear-gradient(135deg, #c9a227, #f0d060);
+            color: #0f0c29;
+            font-weight: 800;
+            font-size: 16px;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            width: 100%;
+            transition: all .3s;
+            box-shadow: 0 4px 20px rgba(201, 162, 39, 0.4);
+            cursor: pointer;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(201, 162, 39, 0.6);
+            opacity: 0.9;
+        }
+        
+        .divider {
+            color: rgba(255, 255, 255, 0.3);
+            text-align: center;
+            margin: 20px 0;
+            font-size: 13px;
+        }
+        
+        .link-reg {
+            color: #c9a227;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .link-reg:hover {
+            color: #f0d060;
+            text-decoration: underline;
+        }
+        
+        .alert {
+            border-radius: 12px;
+            font-size: 14px;
+            background: rgba(220, 53, 69, 0.2);
+            border: 1px solid rgba(220, 53, 69, 0.4);
+            color: #ff8e97;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .uid-hint {
+            background: rgba(201, 162, 39, 0.1);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-top: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-wrapper">
+        <div class="logo-area">
+            <div class="icon">⚖️</div>
+            <h1>⚖️ AI lawyer powered system</h1>
+            <p>سجل دخولك الان</p>
+        </div>
+
+        {% with messages = get_flashed_messages() %} {% if messages %} {% for msg in messages %}
+        <div class="alert">{{ msg }}</div>
+        {% endfor %} {% endif %} {% endwith %}
+
+        <form method="POST" action="{{ url_for('auth.login') }}">
+            <div class="mb-3">
+                <label class="form-label">البريد الإلكتروني</label>
+                <input type="email" name="email" class="form-control" placeholder="أدخل بريدك الإلكتروني" required>
+            </div>
+            <div class="mb-4">
+                <label class="form-label">كلمة المرور</label>
+                <input type="password" name="password" class="form-control" placeholder="أدخل كلمة المرور" required>
+            </div>
+            <button type="submit" class="btn-login">دخول النظام</button>
+        </form>
+
+        <div class="divider">— أو —</div>
+
+        <div class="text-center">
+            <span style="color:rgba(255,255,255,0.5); font-size:14px;">ليس لديك حساب حتى الآن؟ </span>
+            <div class="mt-2">
+                <a href="{{ url_for('auth.register') }}" class="link-reg">إنشاء حساب جديد كعميل أو محامي</a> </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>غرفة الاستشارة المباشرة</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f1f5f9;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        /* ── إعدادات أداة جوجل للترجمة ── */
+        
+        .goog-te-banner-frame.skiptranslate {
+            display: none !important;
+        }
+        
+        body {
+            top: 0px !important;
+        }
+        /* تصميم قائمة جوجل ليناسب الهيدر الغامق */
+        
+        #google_translate_element select {
+            background-color: transparent;
+            color: #ffffff;
+            border: 1px solid #ffffff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            margin-left: 10px;
+            /* لإبعادها قليلاً عن الأزرار الأخرى */
+        }
+        
+        #google_translate_element select option {
+            color: #0f172a;
+            background-color: white;
+        }
+        
+        .goog-te-gadget {
+            color: transparent !important;
+            font-size: 0px;
+            margin: 0 !important;
+        }
+        
+        .goog-logo-link {
+            display: none !important;
+        }
+        /* ────────────────────────────── */
+        
+        .chat-header {
+            background: #0f172a;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chat-box {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .message {
+            max-width: 75%;
+            padding: 12px 18px;
+            border-radius: 15px;
+            position: relative;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .sent {
+            align-self: flex-end;
+            background: #c5a059;
+            color: white;
+            border-bottom-left-radius: 2px;
+        }
+        
+        .received {
+            align-self: flex-start;
+            background: white;
+            color: #1e293b;
+            border-bottom-right-radius: 2px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .msg-info {
+            font-size: 0.7rem;
+            margin-bottom: 4px;
+            opacity: 0.8;
+        }
+        
+        .chat-footer {
+            background: white;
+            padding: 15px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .closed-banner {
+            background: #fee2e2;
+            color: #991b1b;
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+        }
+        
+        #msgInput {
+            border-radius: 25px;
+            padding: 10px 20px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .send-btn {
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0f172a;
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="chat-header">
+        <div>
+            <h6 class="mb-0">محادثة: {{ chat_session.clientName }}</h6>
+            <small class="opacity-75">الحالة: <span id="statusLabel">{{ chat_session.status }}</span></small>
+        </div>
+        <div class="d-flex align-items-center">
+            <div id="google_translate_element"></div>
+
+            {% if session['role'] == 'Lawyer' and chat_session.status == 'Active' %}
+            <button onclick="closeSession()" class="btn btn-sm btn-danger me-2" id="closeBtn">إنهاء الجلسة</button> {% endif %}
+            <a href="/" class="btn btn-sm btn-outline-light">خروج</a>
+        </div>
+    </div>
+
+    {% if chat_session.status == 'Closed' %}
+    <div class="closed-banner">🔒 تم إنهاء هذه الجلسة وأرشفتها. لا يمكن إرسال رسائل جديدة.</div>
+    {% endif %}
+
+    <div class="chat-box" id="chatBox">
+    </div>
+
+    <div class="chat-footer" id="footerInput" {% if chat_session.status=='Closed' %}style="display:none;" {% endif %}>
+        <div class="d-flex gap-2">
+            <input type="text" id="msgInput" class="form-control" placeholder="اكتب رسالتك هنا..." onkeypress="if(event.key==='Enter') sendMessage()">
+            <button onclick="sendMessage()" class="send-btn" id="sendBtn">🕊️</button>
+        </div>
+    </div>
+
+    <script>
+        const sessionId = "{{ session_id }}";
+        const currentUserId = "{{ session['user_id'] }}";
+        let isClosed = "{{ chat_session.status }}" === "Closed";
+
+        async function loadMessages() {
+            try {
+                const res = await fetch(`/api/get_messages/${sessionId}`);
+                const messages = await res.json();
+                const chatBox = document.getElementById('chatBox');
+
+                let html = messages.map(msg => {
+                    const isMine = msg.senderID === currentUserId;
+                    return `
+                        <div class="message ${isMine ? 'sent' : 'received'}">
+                            <div class="msg-info">${isMine ? 'أنت' : msg.senderName} • ${msg.time_display}</div>
+                            <div class="msg-text">${msg.text}</div>
+                        </div>
+                    `;
+                }).join('');
+
+                if (chatBox.innerHTML !== html) {
+                    chatBox.innerHTML = html;
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        async function sendMessage() {
+            if (isClosed) return;
+            const input = document.getElementById('msgInput');
+            const btn = document.getElementById('sendBtn');
+            const text = input.value.trim();
+            if (!text) return;
+
+            input.value = "";
+            btn.disabled = true;
+
+            const formData = new FormData();
+            formData.append('sessionID', sessionId);
+            formData.append('text', text);
+
+            try {
+                const res = await fetch('/api/send_message', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                if (data.success) {
+                    loadMessages();
+                } else {
+                    alert(data.error);
+                    location.reload();
+                }
+            } catch (e) {
+                alert("خطأ في الاتصال");
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function closeSession() {
+            if (confirm("هل أنت متأكد من إنهاء الاستشارة؟ سيتم قفل المحادثة نهائياً.")) {
+                const res = await fetch(`/api/close_session/${sessionId}`, {
+                    method: 'POST'
+                });
+                const data = await res.json();
+                if (data.success) {
+                    location.reload();
+                }
+            }
+        }
+
+        setInterval(loadMessages, 3000);
+        loadMessages();
+    </script>
+
+    <script type="text/javascript">
+        function loadGoogleTranslate() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'ar',
+                includedLanguages: 'en,es,fr,ar',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=loadGoogleTranslate"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>إنشاء حساب</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29 0%, #1a1a3e 50%, #0f2027 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            /* مضاف لضبط موضع زر الترجمة */
+        }
+        /* ── إعدادات أداة جوجل للترجمة ── */
+        
+        .goog-te-banner-frame.skiptranslate {
+            display: none !important;
+        }
+        
+        body {
+            top: 0px !important;
+        }
+        /* تصميم قائمة جوجل ليناسب الواجهة المظلمة (تأثير زجاجي) */
+        
+        #google_translate_element select {
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        #google_translate_element select:hover {
+            border-color: #c9a227;
+        }
+        
+        #google_translate_element select option {
+            color: #0f0c29;
+            background-color: white;
+        }
+        
+        .goog-te-gadget {
+            color: transparent !important;
+            font-size: 0px;
+        }
+        
+        .goog-logo-link {
+            display: none !important;
+        }
+        /* موضع الأداة في أعلى يسار الشاشة */
+        
+        .translate-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+        /* ────────────────────────────── */
+        
+        .reg-wrapper {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 24px;
+            padding: 48px 40px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+        }
+        
+        .logo-area {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        
+        .logo-area .icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #c9a227, #f0d060);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 12px;
+            box-shadow: 0 8px 32px rgba(201, 162, 39, 0.4);
+        }
+        
+        .logo-area h1 {
+            color: #f0d060;
+            font-size: 20px;
+            font-weight: 800;
+            margin: 0;
+        }
+        
+        .form-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 14px;
+        }
+        
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: #c9a227;
+            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.2);
+            color: #fff;
+        }
+        
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .role-cards {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        
+        .role-card {
+            flex: 1;
+            padding: 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            transition: all .3s;
+            background: rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+        
+        .role-card:hover {
+            border-color: #c9a227;
+        }
+        
+        .role-card input[type=radio] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .role-card.active {
+            border-color: #c9a227;
+            background: rgba(201, 162, 39, 0.15);
+            box-shadow: 0 0 15px rgba(201, 162, 39, 0.2);
+        }
+        
+        .role-card .emoji {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 6px;
+        }
+        
+        .role-card .label {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 600;
+            display: block;
+        }
+        
+        .btn-reg {
+            background: linear-gradient(135deg, #c9a227, #f0d060);
+            color: #0f0c29;
+            font-weight: 800;
+            font-size: 16px;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            width: 100%;
+            transition: all .3s;
+            box-shadow: 0 4px 20px rgba(201, 162, 39, 0.3);
+        }
+        
+        .btn-reg:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(201, 162, 39, 0.5);
+        }
+        
+        .link-login {
+            color: #c9a227;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .alert {
+            border-radius: 12px;
+            font-size: 14px;
+            background: rgba(220, 53, 69, 0.1);
+            color: #ff8e8e;
+            border: 1px solid rgba(220, 53, 69, 0.2);
+        }
+        
+        .lawyer-note {
+            font-size: 11px;
+            color: #f0d060;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="translate-container">
+        <div id="google_translate_element"></div>
+    </div>
+
+    <div class="reg-wrapper">
+        <div class="logo-area">
+            <div class="icon">⚖️</div>
+            <h1>إنشاء حساب جديد</h1>
+        </div>
+
+        {% with messages = get_flashed_messages() %} {% if messages %} {% for msg in messages %}
+        <div class="alert mb-3 text-center py-2">{{ msg }}</div>
+        {% endfor %} {% endif %} {% endwith %}
+
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label">الاسم الكامل</label>
+                <input type="text" name="fullname" class="form-control" placeholder="أدخل اسمك الثلاثي" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">البريد الإلكتروني</label>
+                <input type="email" name="email" class="form-control" placeholder="name@example.com" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">رقم الهاتف</label>
+                <input type="tel" name="phone" class="form-control" placeholder="05XXXXXXXX" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">كلمة المرور</label>
+                <input type="password" name="password" class="form-control" placeholder="كلمة مرور قوية (6 رموز فأكثر)" required minlength="6">
+            </div>
+            <div class="mb-4">
+                <label class="form-label d-block mb-2">نوع العضوية</label>
+                <div class="role-cards">
+                    <label class="role-card active" id="card-client">
+                        <input type="radio" name="role" value="Client" checked onchange="updateRoleUI('card-client')">
+                        <span class="emoji">👤</span>
+                        <span class="label">عميل</span>
+                        <small style="color:rgba(255,255,255,0.4);font-size:10px;">طلب استشارة</small>
+                    </label>
+                    <label class="role-card" id="card-lawyer">
+                        <input type="radio" name="role" value="Lawyer" onchange="updateRoleUI('card-lawyer')">
+                        <span class="emoji">👨‍⚖️</span>
+                        <span class="label">محامي</span>
+                        <small style="color:rgba(255,255,255,0.4);font-size:10px;">تقديم خدمة</small>
+                    </label>
+                </div>
+                <div id="lawyer-warning" class="lawyer-note text-center mt-2">
+                    ℹ️ حسابات المحامين تتطلب مراجعة وقبول الإدارة قبل التفعيل.
+                </div>
+            </div>
+            <button type="submit" class="btn-reg">تأكيد وإنشاء الحساب 🚀</button>
+        </form>
+
+        <div class="text-center mt-4">
+            <span style="color:rgba(255,255,255,0.5); font-size:14px;">لديك حساب بالفعل؟ </span>
+            <a href="{{ url_for('auth.login') }}" class="link-login">سجل دخولك الآن</a>
+        </div>
+    </div>
+
+    <script>
+        function updateRoleUI(id) {
+            // تحديث الكروت
+            document.querySelectorAll('.role-card').forEach(c => c.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+
+            // إظهار ملاحظة المحامي
+            const warning = document.getElementById('lawyer-warning');
+            if (id === 'card-lawyer') {
+                warning.style.display = 'block';
+            } else {
+                warning.style.display = 'none';
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        function loadGoogleTranslate() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'ar',
+                includedLanguages: 'en,es,fr,ar',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=loadGoogleTranslate"></script>
+
+</body>
+
+</html>

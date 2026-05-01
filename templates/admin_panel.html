@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>لوحة الإدارة — نظام المحامي الذكي</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background: #f1f5f9;
+            margin: 0;
+        }
+        /* ── إعدادات أداة جوجل للترجمة ── */
+        
+        .goog-te-banner-frame.skiptranslate {
+            display: none !important;
+        }
+        
+        body {
+            top: 0px !important;
+        }
+        /* تصميم قائمة جوجل ليناسب شريط الإدارة الغامق */
+        
+        #google_translate_element select {
+            background-color: transparent;
+            color: #ffffff;
+            /* نص أبيض */
+            border: 1px solid #ffffff;
+            /* إطار أبيض */
+            padding: 5px 15px;
+            border-radius: 50rem;
+            font-size: 14px;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+        }
+        
+        #google_translate_element select option {
+            color: #0f172a;
+            background-color: white;
+        }
+        
+        .goog-te-gadget {
+            color: transparent !important;
+            font-size: 0px;
+        }
+        
+        .goog-logo-link {
+            display: none !important;
+        }
+        /* ────────────────────────────── */
+        
+        .admin-nav {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            padding: 0 32px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: none;
+        }
+        
+        .stat-val {
+            font-size: 32px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+        
+        .stat-label {
+            color: #64748b;
+            font-size: 14px;
+        }
+        
+        .tabs-nav {
+            padding: 20px 32px;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+        }
+        
+        .tab-btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            color: #475569;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.3s;
+        }
+        
+        .tab-btn.active {
+            background: #0f172a;
+            color: #fff;
+            border-color: #0f172a;
+        }
+        
+        .table-container {
+            background: #fff;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .role-badge {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        
+        .role-client {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .role-lawyer {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-pending {
+            color: #ef4444;
+            font-weight: 800;
+            animation: blink 1.5s infinite;
+        }
+        
+        @keyframes blink {
+            50% {
+                opacity: 0.5;
+            }
+        }
+        
+        .btn-action {
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px 16px;
+        }
+        /* ── Library Style ── */
+        
+        .library-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            background: white;
+            transition: 0.3s;
+        }
+        
+        .library-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .lib-icon {
+            font-size: 30px;
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="admin-nav">
+        <div class="fs-4 fw-bold"> لوحة التحكم </div>
+        <div class="d-flex align-items-center gap-3">
+
+            <div id="google_translate_element"></div>
+
+            <span>المدير: {{ session['name'] }}</span>
+            <a href="/logout" class="btn btn-outline-light btn-sm">خروج</a>
+        </div>
+    </nav>
+
+    <div class="container-fluid px-4 py-4">
+        <div class="row g-4 mb-4">
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-val text-primary">{{ stats.total_users }}</div>
+                    <div class="stat-label">إجمالي المستخدمين</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-val text-danger">{{ stats.pending_lawyers }}</div>
+                    <div class="stat-label">طلبات محامين معلقة</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-val text-success">{{ all_cases|length }}</div>
+                    <div class="stat-label">إجمالي القضايا الجارية</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs-nav">
+            <button class="tab-btn active" onclick="showTab('lawyers-req', this)">طلبات الانضمام [{{ stats.pending_lawyers }}]</button>
+            <button class="tab-btn" onclick="showTab('users-list', this)">إدارة المستخدمين</button>
+            <button class="tab-btn" onclick="showTab('cases-list', this)">الرقابة على القضايا</button>
+            <button class="tab-btn" onclick="showTab('library-list', this)">المكتبة القانونية</button>
+        </div>
+
+        <div id="lawyers-req" class="tab-content">
+            <div class="table-container">
+                <h5 class="fw-bold mb-4">⚖️ مراجعة طلبات المحامين الجدد</h5>
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>الاسم</th>
+                            <th>البريد الإلكتروني</th>
+                            <th>رقم الهاتف</th>
+                            <th>تاريخ الطلب</th>
+                            <th>الإجراء</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in all_users if u.userType == 'Lawyer' and u.status == 'pending_approval' %}
+                        <tr>
+                            <td><strong>{{ u.fullName }}</strong></td>
+                            <td>{{ u.email }}</td>
+                            <td>{{ u.phone }}</td>
+                            <td>{{ u.createdAt }}</td>
+                            <td>
+                                <button class="btn btn-success btn-action me-2" onclick="manageLawyer('{{ u.uid }}', 'approve')">قبول ✅</button>
+                                <button class="btn btn-danger btn-action me-2" onclick="manageLawyer('{{ u.uid }}', 'reject')">رفض ❌</button>
+                                <button class="btn btn-secondary btn-action" onclick="startAdminChat('{{ u.uid }}')">دردشة 💬</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% if stats.pending_lawyers == 0 %}
+                <div class="text-center py-4 text-muted">لا توجد طلبات معلقة حالياً.</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div id="users-list" class="tab-content d-none">
+            <div class="table-container">
+                <h5 class="fw-bold mb-4">👥 إدارة مستخدمي النظام</h5>
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>المستخدم</th>
+                            <th>النوع</th>
+                            <th>الحالة</th>
+                            <th>إجراء</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in all_users %}
+                        <tr>
+                            <td>
+                                <div class="fw-bold">{{ u.fullName }}</div>
+                                <div class="small text-muted">{{ u.email }}</div>
+                            </td>
+                            <td>
+                                <span class="role-badge {{ 'role-lawyer' if u.userType == 'Lawyer' else 'role-client' }}">
+                                    {{ 'محامي' if u.userType == 'Lawyer' else 'عميل' }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if u.status == 'active' %}
+                                <span class="text-success small fw-bold">نشط</span> {% elif u.status == 'pending_approval' %}
+                                <span class="status-pending small">بانتظار الموافقة</span> {% else %}
+                                <span class="text-danger small">مرفوض/موقوف</span> {% endif %}
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-outline-dark btn-sm rounded-pill px-3" onclick="startAdminChat('{{ u.uid }}')">دردشة إدارية 💬</button> {% if u.userType != 'Admin' %}
+                                    <button class="btn btn-outline-danger btn-sm rounded-pill" onclick="deleteUser('{{ u.uid }}')">حذف</button> {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="cases-list" class="tab-content d-none">
+            <div class="table-container">
+                <h5 class="fw-bold mb-4">📁 مراقبة سير القضايا</h5>
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>العميل</th>
+                            <th>نوع القضية</th>
+                            <th>الحالة</th>
+                            <th>المحامي الموكل</th>
+                            <th>إجراء</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for c in all_cases %}
+                        <tr>
+                            <td>{{ c.clientName }}</td>
+                            <td>{{ c.caseType }}</td>
+                            <td>
+                                <span class="badge {{ 'bg-success' if c.status == 'accepted' else 'bg-warning' if c.status == 'pending' else 'bg-secondary' }}">
+                                    {{ c.status }}
+                                </span>
+                            </td>
+                            <td>{{ c.lawyerId if c.lawyerId else 'لم يتم التعيين' }}</td>
+                            <td>
+                                <a href="/chat/{{ c.id }}" class="btn btn-sm btn-outline-primary">دخول كمتابع </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="library-list" class="tab-content d-none">
+            <div class="table-container">
+                <h5 class="fw-bold mb-4">📚 مصادر المكتبة الرقمية (عرض النظام)</h5>
+                <div class="row g-3">
+                    {% for item in library %}
+                    <div class="col-md-4">
+                        <div class="library-card">
+                            <span class="lib-icon">📕</span>
+                            <div class="fw-bold">{{ item.name }}</div>
+                            <a href="{{ item.url }}" target="_blank" class="small text-primary text-decoration-none">رابط النظام الرسمي</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(id, btn) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('d-none'));
+            document.getElementById(id).classList.remove('d-none');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        async function manageLawyer(uid, action) {
+            const url = action === 'approve' ? `/admin/approve_lawyer/${uid}` : `/admin/reject_lawyer/${uid}`;
+            if (confirm(`هل أنت متأكد من تنفيذ هذا الإجراء (${action === 'approve' ? 'قبول' : 'رفض'})؟`)) {
+                const resp = await fetch(url, {
+                    method: 'POST'
+                });
+                const data = await resp.json();
+                if (data.success) {
+                    alert("تم تحديث الحالة بنجاح");
+                    location.reload();
+                }
+            }
+        }
+
+        async function startAdminChat(uid) {
+            const resp = await fetch('/api/admin_chat/init', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    targetUid: uid
+                })
+            });
+            const data = await resp.json();
+            if (data.success) {
+                window.location.href = `/admin/chat/${data.chatId}`;
+            } else {
+                alert("تعذر فتح المحادثة حالياً");
+            }
+        }
+
+        async function deleteUser(uid) {
+            if (confirm("هل أنت متأكد من حذف هذا المستخدم نهائياً؟")) {
+                const resp = await fetch(`/delete_user/${uid}`, {
+                    method: 'POST'
+                });
+                const data = await resp.json();
+                if (data.success) location.reload();
+                else alert("خطأ: " + data.msg);
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        function loadGoogleTranslate() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'ar',
+                includedLanguages: 'en,es,fr,ar',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=loadGoogleTranslate"></script>
+
+</body>
+
+</html>

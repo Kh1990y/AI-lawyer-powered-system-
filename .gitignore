@@ -1,0 +1,14 @@
+# المجلدات البرمجية
+venv/
+__pycache__/
+*.pyc
+
+# ملفات الأسرار والمفاتيح (ستبقى في جهازك ولن ترفع)
+.env
+serviceAccountKey.json
+*.json
+!.github/
+
+# ملفات النظام
+.DS_Store
+Thumbs.db
