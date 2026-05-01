@@ -6,6 +6,7 @@ __pycache__/
 # ملفات الأسرار والمفاتيح (ستبقى في جهازك ولن ترفع)
 .env
 serviceAccountKey.json
+ai-lawyer-system-23a63-firebase-adminsdk-fbsvc-6bd1d2ea1b.json
 *.json
 !.github/
 

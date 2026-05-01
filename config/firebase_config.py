@@ -16,7 +16,7 @@ def init_firebase():
     global db, bucket
     
     try:
-        cred = credentials.Certificate("serviceAccountKey.json")
+        cred = credentials.Certificate("ai-lawyer-system-23a63-firebase-adminsdk-fbsvc-6bd1d2ea1b.json")
         
         if not firebase_admin._apps:
             firebase_admin.initialize_app(
