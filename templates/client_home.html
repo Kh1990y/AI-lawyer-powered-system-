@@ -30,10 +30,9 @@
             --shadow-md: 0 4px 12px rgba(30, 58, 95, 0.10), 0 2px 6px rgba(0, 0, 0, 0.06);
             --shadow-lg: 0 10px 30px rgba(30, 58, 95, 0.14), 0 4px 12px rgba(0, 0, 0, 0.08);
             --radius-sm: 10px;
-            --radius-md: 16px;
+            --radius-md: scaleX(1);
             --radius-lg: 24px;
             --radius-xl: 32px;
-            /* Touch target: minimum 44px (Apple HIG) */
             --touch-target: 44px;
         }
         
@@ -44,11 +43,9 @@
         body {
             font-family: 'Tajawal', sans-serif;
             background-color: #f0f4f9;
-            background-image: radial-gradient(circle at 20% 50%, rgba(30, 58, 95, 0.03) 0%, transparent 60%), radial-gradient(circle at 80% 20%, rgba(124, 131, 188, 0.04) 0%, transparent 50%);
             min-height: 100vh;
             -webkit-tap-highlight-color: transparent;
         }
-        /* === TAB SYSTEM === */
         
         .tab-content {
             display: none;
@@ -69,7 +66,6 @@
                 transform: translateY(0);
             }
         }
-        /* === NAV ACTIVE STATES === */
         
         .desktop-nav .nav-btn {
             position: relative;
@@ -107,11 +103,6 @@
             transform: scaleX(1);
         }
         
-        .desktop-nav .nav-btn:hover {
-            color: rgba(255, 255, 255, 0.9);
-        }
-        /* === MOBILE BOTTOM NAV === */
-        
         .mobile-nav-btn {
             flex: 1;
             display: flex;
@@ -128,7 +119,6 @@
             transition: color 0.2s, transform 0.15s;
             font-size: 0.6rem;
             font-weight: 700;
-            font-family: 'Tajawal', sans-serif;
             border-radius: var(--radius-sm);
             position: relative;
         }
@@ -148,11 +138,6 @@
             border-radius: 0 0 4px 4px;
         }
         
-        .mobile-nav-btn:active {
-            transform: scale(0.92);
-        }
-        /* === CARDS === */
-        
         .card {
             background: var(--surface);
             border-radius: var(--radius-lg);
@@ -161,16 +146,11 @@
             transition: box-shadow 0.2s, transform 0.2s;
         }
         
-        .card:hover {
-            box-shadow: var(--shadow-md);
-        }
-        /* === BUTTONS === */
-        
         .btn-primary {
             background: var(--primary);
             color: #fff;
             border: none;
-            border-radius: var(--radius-md);
+            border-radius: 16px;
             font-family: 'Tajawal', sans-serif;
             font-weight: 700;
             min-height: var(--touch-target);
@@ -188,19 +168,13 @@
         
         .btn-primary:hover {
             background: var(--primary-light);
-            box-shadow: 0 6px 18px rgba(30, 58, 95, 0.32);
-        }
-        
-        .btn-primary:active {
-            transform: scale(0.96);
-            box-shadow: 0 2px 8px rgba(30, 58, 95, 0.2);
         }
         
         .btn-ghost {
             background: transparent;
             color: var(--text-secondary);
             border: 1px solid var(--border);
-            border-radius: var(--radius-md);
+            border-radius: 12px;
             font-family: 'Tajawal', sans-serif;
             font-weight: 600;
             min-height: var(--touch-target);
@@ -214,60 +188,30 @@
             font-size: 0.88rem;
         }
         
-        .btn-ghost:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            background: var(--primary-ultra-light);
-        }
-        
-        .btn-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: var(--touch-target);
-            min-height: var(--touch-target);
-            border-radius: var(--radius-sm);
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        /* === FORM ELEMENTS === */
-        
         .form-input {
             width: 100%;
             min-height: var(--touch-target);
             background: var(--surface-alt);
             border: 1.5px solid var(--border);
-            border-radius: var(--radius-md);
+            border-radius: 16px;
             padding: 10px 16px;
             font-family: 'Tajawal', sans-serif;
             font-size: 0.95rem;
             color: var(--text-primary);
             outline: none;
             transition: border-color 0.2s, box-shadow 0.2s;
-            appearance: none;
-            -webkit-appearance: none;
         }
         
         .form-input:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.10);
-            background: var(--surface);
         }
-        
-        .form-label {
-            display: block;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 6px;
-            font-size: 0.9rem;
-        }
-        /* === CHAT BUBBLES === */
         
         #chat-display,
-        #history-chat-display {
+        #history-chat-display,
+        #admin-chat-display {
             background: var(--surface-alt);
-            border-radius: var(--radius-md);
+            border-radius: 16px;
             border: 1px solid var(--border);
             min-height: 260px;
             max-height: 420px;
@@ -279,38 +223,21 @@
             scroll-behavior: smooth;
         }
         
-        #chat-display::-webkit-scrollbar,
-        #history-chat-display::-webkit-scrollbar {
-            width: 4px;
-        }
-        
-        #chat-display::-webkit-scrollbar-track,
-        #history-chat-display::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        
-        #chat-display::-webkit-scrollbar-thumb,
-        #history-chat-display::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 4px;
-        }
-        
         .chat-user {
             background: var(--primary);
             color: #fff;
-            border-radius: var(--radius-md) var(--radius-md) 4px var(--radius-md);
+            border-radius: 16px 16px 4px 16px;
             padding: 12px 16px;
             max-width: 80%;
             align-self: flex-start;
             font-size: 0.9rem;
             line-height: 1.6;
-            box-shadow: 0 2px 8px rgba(30, 58, 95, 0.2);
         }
         
         .chat-bot {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: var(--radius-md) var(--radius-md) var(--radius-md) 4px;
+            border-radius: 16px 16px 16px 4px;
             padding: 12px 16px;
             max-width: 85%;
             align-self: flex-end;
@@ -319,591 +246,46 @@
             box-shadow: var(--shadow-sm);
         }
         
-        .chat-bot p {
-            margin: 0 0 6px;
-        }
-        
-        .chat-bot ul {
-            margin: 4px 0;
-            padding-right: 18px;
-        }
-        
-        .chat-bot li {
-            margin-bottom: 3px;
-        }
-        /* === QUICK CHIPS === */
-        
-        .chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--surface);
-            border: 1.5px solid var(--border);
-            border-radius: 999px;
-            padding: 8px 16px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.2s;
-            min-height: 36px;
-            white-space: nowrap;
-            font-family: 'Tajawal', sans-serif;
-        }
-        
-        .chip:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            background: var(--primary-ultra-light);
-        }
-        
-        .chip:active {
-            transform: scale(0.95);
-        }
-        /* === TEXTAREA WRAPPER === */
-        
-        .chat-input-wrapper {
-            display: flex;
-            align-items: flex-end;
-            gap: 10px;
-            background: var(--surface);
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 10px 12px;
-            box-shadow: var(--shadow-sm);
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-        
-        .chat-input-wrapper:focus-within {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.10);
-        }
-        
-        #ai-input {
-            flex: 1;
-            border: none;
-            background: transparent;
-            outline: none;
-            font-family: 'Tajawal', sans-serif;
-            font-size: 0.95rem;
-            color: var(--text-primary);
-            resize: none;
-            line-height: 1.5;
-            min-height: 40px;
-            max-height: 120px;
-        }
-        
-        #send-btn {
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            border-radius: var(--radius-sm);
-            min-width: 44px;
-            min-height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.15s;
-            flex-shrink: 0;
-        }
-        
-        #send-btn:hover {
-            background: var(--primary-light);
-        }
-        
-        #send-btn:active {
-            transform: scale(0.92);
-        }
-        /* === REQUEST CARDS === */
-        
-        .request-card {
-            background: var(--surface);
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border);
-            padding: 16px;
-            box-shadow: var(--shadow-sm);
-            transition: box-shadow 0.2s;
-        }
-        
-        .request-card:hover {
-            box-shadow: var(--shadow-md);
-        }
-        /* === LIBRARY ITEMS === */
-        
-        .library-item {
-            background: var(--surface);
-            border-radius: var(--radius-md);
-            border: 1.5px solid var(--border);
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            text-decoration: none;
-            transition: all 0.2s;
-            min-height: 68px;
-        }
-        
-        .library-item:hover {
-            border-color: var(--primary);
-            box-shadow: var(--shadow-md);
-            transform: translateY(-2px);
-        }
-        
-        .library-item:active {
-            transform: scale(0.97);
-        }
-        /* === BADGE === */
-        
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 3px 10px;
-            border-radius: 999px;
-            font-size: 0.75rem;
-            font-weight: 700;
-        }
-        
-        .badge-warning {
-            background: #fff7ed;
-            color: var(--warning);
-        }
-        
-        .badge-success {
-            background: #f0fdf4;
-            color: var(--success);
-        }
-        /* === MODAL === */
-        
-        #request-modal,
-        #chat-history-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.6);
-            z-index: 100;
-            display: none;
-            align-items: flex-end;
-            justify-content: center;
-            padding: 0;
-            backdrop-filter: blur(6px);
-        }
-        
-        #request-modal.open,
-        #chat-history-modal.open {
-            display: flex;
-        }
-        
-        .modal-sheet {
-            background: var(--surface);
-            width: 100%;
-            max-width: 600px;
-            max-height: 92vh;
-            overflow-y: auto;
-            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-            padding: 28px 24px 40px;
-            box-shadow: var(--shadow-lg);
-            animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        
-        @keyframes slideUp {
-            from {
-                transform: translateY(60px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        
-        .modal-handle {
-            width: 40px;
-            height: 4px;
-            background: var(--border);
-            border-radius: 2px;
-            margin: 0 auto 20px;
-        }
-        /* On larger screens, center it */
-        
-        @media (min-width: 640px) {
-            #request-modal,
-            #chat-history-modal {
-                align-items: center;
-                padding: 20px;
-            }
-            .modal-sheet {
-                border-radius: var(--radius-xl);
-                max-width: 520px;
-                animation: scaleIn 0.25s ease;
-            }
-            @keyframes scaleIn {
-                from {
-                    transform: scale(0.95);
-                    opacity: 0;
-                }
-                to {
-                    transform: scale(1);
-                    opacity: 1;
-                }
-            }
-        }
-        /* === PROFILE CARD === */
-        
-        .profile-field {
-            background: var(--surface-alt);
-            border-radius: var(--radius-md);
-            padding: 14px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid var(--border);
-        }
-        /* === SECTION HEADERS === */
-        
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-        
-        .section-header h3 {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-        
-        .section-icon {
-            width: 34px;
-            height: 34px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        /* === PENDING OVERLAY === */
-        
-        .pending-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.75);
-            z-index: 999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            backdrop-filter: blur(4px);
-        }
-        
-        .pending-card {
-            background: var(--surface);
-            border-radius: var(--radius-xl);
-            padding: 36px 28px;
-            max-width: 400px;
-            width: 100%;
-            text-align: center;
-            box-shadow: var(--shadow-lg);
-        }
-        /* === HEADER === */
-        
-        header {
-            background: var(--primary);
-            background-image: linear-gradient(135deg, #1e3a5f 0%, #2a4f82 100%);
-            box-shadow: 0 4px 20px rgba(30, 58, 95, 0.3);
-            /* تغيير الهيدر ليكون متوافقاً مع نزول الصفحة عند ظهور بار الترجمة */
-            position: relative;
-            z-index: 40;
-        }
-        /* === GOOGLE TRANSLATE CUSTOMIZATION === */
-        /* إخفاء نوافذ التلميحات عند التمرير */
-        
-        #goog-gt-tt,
-        .goog-te-balloon-frame {
-            display: none !important;
-        }
-        
-        .goog-text-highlight {
-            background-color: transparent !important;
-            box-shadow: none !important;
-        }
-        /* تنسيق الأداة لإخفاء الشعار والنصوص الافتراضية مع الاحتفاظ بالقائمة */
-        
-        #google_translate_element {
-            margin-top: 2px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-        }
-        
-        .goog-te-gadget {
-            font-family: 'Tajawal', sans-serif !important;
-            color: transparent !important;
-            font-size: 0 !important;
-        }
-        
-        .goog-te-gadget img,
-        .goog-te-gadget .goog-logo-link {
-            display: none !important;
-        }
-        /* تجميل القائمة المنسدلة */
-        
-        .goog-te-gadget .goog-te-combo {
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
+        #google_translate_element select {
             background-color: rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.25);
             color: #ffffff;
             border-radius: 8px;
-            padding: 6px 12px 6px 32px;
-            /* مسافة للأسهم في اليمين/اليسار */
-            font-family: 'Tajawal', sans-serif;
+            padding: 4px 8px;
             font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
             outline: none;
-            margin: 0;
-            /* سهم مخصص للقائمة المنسدلة */
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: left 8px center;
-            background-size: 16px;
-            backdrop-filter: blur(4px);
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .goog-te-gadget .goog-te-combo:hover {
-            background-color: rgba(255, 255, 255, 0.25);
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-        /* تنسيق الخيارات من الداخل */
-        
-        .goog-te-gadget .goog-te-combo option {
-            background-color: var(--primary);
-            color: #ffffff;
-            padding: 8px;
-        }
-        /* === NOTIFICATIONS DROPDOWN === */
-        
-        .notifications-dropdown {
-            position: absolute;
-            top: 54px;
-            left: 0;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-lg);
-            width: 280px;
-            z-index: 100;
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-            animation: fadeSlideIn 0.2s ease;
-        }
-        
-        .notifications-dropdown.show {
-            display: flex;
-        }
-        
-        .notifications-header {
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--border);
-            font-weight: 700;
-            color: var(--text-primary);
-            font-size: 0.95rem;
-            text-align: right;
-        }
-        
-        .notifications-body {
-            padding: 24px 16px;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-        /* === SEARCH INPUT === */
-        
-        .search-wrapper {
-            position: relative;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .search-wrapper input {
-            width: 100%;
-            background: var(--surface);
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 14px 52px 14px 18px;
-            font-family: 'Tajawal', sans-serif;
-            font-size: 1rem;
-            outline: none;
-            min-height: 52px;
-            color: var(--text-primary);
-            box-shadow: var(--shadow-sm);
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-        
-        .search-wrapper input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.10);
-        }
-        
-        .search-wrapper .search-icon {
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            pointer-events: none;
-        }
-        /* === EMPTY STATE === */
-        
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-muted);
-        }
-        
-        .empty-state-icon {
-            width: 56px;
-            height: 56px;
-            background: var(--surface-alt);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 12px;
-        }
-        /* === RESPONSIVE HELPERS === */
-        
-        @media (max-width: 480px) {
-            .card {
-                border-radius: var(--radius-md);
-            }
-            .modal-sheet {
-                padding: 24px 18px 36px;
-            }
-        }
-        /* Tablet improvements */
-        
-        @media (min-width: 768px) and (max-width: 1023px) {
-            .main-container {
-                padding: 24px;
-            }
-        }
-        /* === LOADING DOTS === */
-        
-        .loading-dots {
-            display: flex;
-            gap: 4px;
-            padding: 4px 0;
-        }
-        
-        .loading-dots span {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--primary);
-            animation: bounce 1.2s infinite;
-        }
-        
-        .loading-dots span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-        
-        .loading-dots span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-        
-        @keyframes bounce {
-            0%,
-            80%,
-            100% {
-                transform: scale(0.6);
-                opacity: 0.4;
-            }
-            40% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-        /* Page bottom padding to avoid bottom nav overlap */
-        
-        .main-container {
-            padding-bottom: 80px;
-        }
-        
-        @media (min-width: 768px) {
-            .main-container {
-                padding-bottom: 40px;
-            }
-        }
-        /* Floating action button for mobile */
-        
-        .fab {
-            position: fixed;
-            bottom: 76px;
-            left: 16px;
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            width: 52px;
-            height: 52px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 6px 20px rgba(30, 58, 95, 0.35);
             cursor: pointer;
-            z-index: 30;
-            transition: all 0.2s;
         }
         
-        .fab:hover {
-            transform: scale(1.08);
-            background: var(--primary-light);
+        #google_translate_element select option {
+            color: #000;
+            background-color: #fff;
         }
         
-        .fab:active {
-            transform: scale(0.92);
+        .goog-te-gadget {
+            color: transparent !important;
+            font-size: 0px !important;
         }
         
-        @media (min-width: 768px) {
-            .fab {
-                display: none;
-            }
+        .goog-te-gadget img {
+            display: none !important;
+        }
+        
+        .goog-te-banner-frame.skiptranslate {
+            display: none !important;
+        }
+        
+        body {
+            top: 0px !important;
         }
     </style>
 </head>
 
 <body class="text-right">
 
-    {% if session['role'] == 'Lawyer' and session['status'] == 'pending_approval' %}
-    <div class="pending-overlay" id="pending-overlay">
-        <div class="pending-card">
-            <div style="width:72px;height:72px;background:#fff7ed;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
-                <i data-lucide="clock" style="width:34px;height:34px;color:#d97706;"></i>
-            </div>
-            <h2 style="font-size:1.4rem;font-weight:800;color:var(--text-primary);margin-bottom:8px;">حسابك قيد المراجعة</h2>
-            <p style="color:var(--text-secondary);line-height:1.7;margin-bottom:24px;font-size:0.95rem;">
-                مرحباً بك يا {{ session['name'] }}. حسابك كمحامٍ لا يزال بانتظار تفعيل الإدارة. يمكنك حالياً تصفح النظام كعميل فقط.
-            </p>
-            <button onclick="document.getElementById('pending-overlay').remove()" class="btn-primary" style="width:100%;justify-content:center;font-size:1rem;">
-                فهمت ذلك
-            </button>
-        </div>
-    </div>
-    {% endif %}
-
     <div class="min-h-screen flex flex-col">
 
-        <header>
+        <header class="bg-[#1e3a5f] text-white">
             <div style="max-width:1100px;margin:0 auto;padding:0 16px;height:64px;display:flex;justify-content:space-between;align-items:center;gap:12px;">
 
                 <div style="display:flex;align-items:center;gap:12px;min-width:0;">
@@ -922,26 +304,14 @@
                     <button onclick="showTab('ai-tab', this)" class="nav-btn nav-active">مساعدك الذكي</button>
                     <button onclick="showTab('requests-tab', this)" class="nav-btn">الطلبات</button>
                     <button onclick="showTab('library-tab', this)" class="nav-btn">المكتبة</button>
-                    <button onclick="showTab('profile-tab', this)" class="nav-btn">حسابي</button>
+                    <button onclick="showTab('profile-tab', this); loadActualProfile();" class="nav-btn">حسابي</button>
                 </nav>
 
-                <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
-
-                    <div style="position:relative;">
-                        <button class="btn-icon" style="background:rgba(255,255,255,0.1);color:#fff;" onclick="toggleNotifications(event)">
-                            <i data-lucide="bell" style="width:20px;height:20px;"></i>
-                        </button>
-
-                        <div class="notifications-dropdown" id="notifications-dropdown" onclick="event.stopPropagation()">
-                            <div class="notifications-header">التنبيهات</div>
-                            <div class="notifications-body">
-                                <i data-lucide="bell-off" style="width:28px;height:28px;opacity:0.4;"></i>
-                                <span>لا توجد تنبيهات حالياً</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <a href="/logout" class="btn-icon" style="background:rgba(220,38,38,0.2);color:#fff;" title="تسجيل الخروج">
+                <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+                    <button onclick="showTab('admin-chat-tab', document.getElementById('desktop-nav')?.querySelector('.nav-btn')); loadAdminChatHistory();" class="btn-icon" style="background:rgba(255,255,255,0.15); color:#fff; padding:10px; border-radius:10px;" title="الدعم الفني والإدارة">
+                        <i data-lucide="shield" style="width:18px;height:18px;"></i>
+                    </button>
+                    <a href="/logout" class="btn-icon" style="background:rgba(220,38,38,0.2);color:#fff; padding:10px; border-radius:10px;" title="تسجيل الخروج">
                         <i data-lucide="log-out" style="width:18px;height:18px;"></i>
                     </a>
                 </div>
@@ -952,7 +322,6 @@
 
             <div id="ai-tab" class="tab-content active">
                 <div class="card" style="padding: clamp(16px, 4vw, 28px);">
-
                     <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:20px;">
                         <div style="background:var(--primary);border-radius:14px;padding:12px;flex-shrink:0;">
                             <i data-lucide="bot" style="width:24px;height:24px;color:#fff;"></i>
@@ -973,104 +342,133 @@
                         <button onclick="setQuestion('ما هي شروط عقد الامتياز التجاري؟')" class="chip">📄 عقود الامتياز</button>
                     </div>
 
-                    <div class="chat-input-wrapper">
-                        <textarea id="ai-input" rows="1" placeholder="اكتب سؤالك القانوني هنا..." oninput="autoResize(this)" onkeydown="handleEnter(event)"></textarea>
-                        <button onclick="askAI()" id="send-btn" aria-label="إرسال">
+                    <div class="flex gap-2">
+                        <textarea id="ai-input" class="form-input flex-1" rows="1" placeholder="اكتب سؤالك القانوني هنا..." onkeydown="handleEnter(event)"></textarea>
+                        <button onclick="askAI()" id="send-btn" class="btn-primary">
                             <i data-lucide="send" style="width:18px;height:18px;"></i>
                         </button>
                     </div>
-
                 </div>
             </div>
 
             <div id="requests-tab" class="tab-content">
-
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
                     <h2 style="font-size:1.4rem;font-weight:800;color:var(--text-primary);">إدارة طلباتك</h2>
-                    <button onclick="toggleModal('request-modal')" class="btn-primary" id="new-request-btn" style="display:none;">
+                    <button onclick="toggleModal('request-modal')" class="btn-primary" id="new-request-btn">
                         <i data-lucide="plus-circle" style="width:18px;height:18px;"></i>
                         طلب محامي مختص
                     </button>
                 </div>
 
-                <div style="display:grid;grid-template-columns:1fr;gap:24px;" class="md:grid-cols-2-custom" id="requests-grid">
-
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="requests-grid">
                     <section>
-                        <div class="section-header">
-                            <div class="section-icon" style="background:#fff7ed;">
-                                <i data-lucide="activity" style="width:18px;height:18px;color:var(--warning);"></i>
-                            </div>
-                            <h3>طلبات نشطة</h3>
+                        <div class="section-header mb-3 flex items-center gap-2">
+                            <i data-lucide="activity" class="text-amber-500"></i>
+                            <h3 class="font-bold text-slate-800">الطلبات النشطة والمعلقة</h3>
                         </div>
                         <div style="display:flex;flex-direction:column;gap:12px;">
-                            {% for req in requests %}
-                            <div class="request-card">
+                            {% for req in requests if req.status in ['Pending', 'Accepted'] and req.status not in ['Closed', 'Rejected'] %}
+                            <div class="request-card p-4 border border-slate-200 bg-white rounded-xl shadow-sm">
                                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                                    <span class="badge badge-warning">قيد المراجعة</span>
+                                    {% if req.status == 'Accepted' %}
+                                    <span class="badge bg-green-50 text-green-600 px-3 py-1 rounded-full text-xs font-bold">تم القبول ✓</span> {% else %}
+                                    <span class="badge bg-amber-50 text-amber-600 px-3 py-1 rounded-full text-xs font-bold">قيد المراجعة</span> {% endif %}
                                     <span style="font-size:0.72rem;color:var(--text-muted);font-family:monospace;">#{{ req.id[:8] }}</span>
                                 </div>
                                 <h4 style="font-weight:800;color:var(--primary);margin-bottom:6px;">{{ req.caseType }}</h4>
-                                <p style="font-size:0.875rem;color:var(--text-secondary);line-height:1.65;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">{{ req.description }}</p>
+                                <p style="font-size:0.875rem;color:var(--text-secondary);line-height:1.65;">{{ req.description }}</p>
+
+                                {% if req.status == 'Accepted' %}
+                                <div style="margin-top:14px; display:flex; justify-content:flex-end;">
+                                    {% set matching_chat = [] %} {% for c in active_chats %} {% if c.requestID == req.id or c.clientID == req.clientID %} {% set _ = matching_chat.append(c) %} {% endif %} {% endfor %} {% if matching_chat and matching_chat[0].status == 'Active' %}
+                                    <a href="/chat/{{ matching_chat[0].id }}" class="btn-primary" style="padding: 6px 16px; font-size: 0.85rem; min-height: 36px;">
+                                        <i data-lucide="message-square" style="width:16px;height:16px;"></i> دخول المحادثة
+                                    </a>
+                                    {% else %}
+                                    <span class="text-xs text-slate-400">جاري فتح غرفة الدردشة...</span> {% endif %}
+                                </div>
+                                {% endif %}
                             </div>
                             {% endfor %} {% if not requests %}
-                            <div class="empty-state">
-                                <div class="empty-state-icon">
-                                    <i data-lucide="inbox" style="width:24px;height:24px;color:var(--text-muted);"></i>
-                                </div>
-                                <p style="font-size:0.9rem;">لا توجد طلبات نشطة حالياً</p>
-                            </div>
+                            <div class="empty-state text-center text-slate-400 py-6">لا توجد طلبات نشطة حالياً.</div>
                             {% endif %}
                         </div>
                     </section>
 
                     <section>
-                        <div class="section-header">
-                            <div class="section-icon" style="background:var(--surface-alt);">
-                                <i data-lucide="archive" style="width:18px;height:18px;color:var(--text-muted);"></i>
-                            </div>
-                            <h3>الجلسات المنتهية</h3>
+                        <div class="section-header mb-3 flex items-center gap-2">
+                            <i data-lucide="archive" class="text-slate-500"></i>
+                            <h3 class="font-bold text-slate-800">الطلبات المؤرشفة</h3>
                         </div>
                         <div style="display:flex;flex-direction:column;gap:10px;">
-                            {% for chat in closed_chats %}
-                            <div class="request-card" style="display:flex;justify-content:space-between;align-items:center;">
-                                <div>
-                                    <p style="font-weight:700;color:var(--text-primary);font-size:0.9rem;">{{ chat.caseType }}</p>
-                                    <p style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">مع المحامي: {{ chat.lawyerName }}</p>
+                            {% for chat in closed_chats if chat.status in ['Closed', 'Rejected'] %}
+                            <div class="request-card p-4 border border-slate-200 bg-white rounded-xl shadow-sm flex flex-col justify-between">
+                                <div class="flex justify-between items-center mb-2">
+                                    <div>
+                                        <p style="font-weight:700;color:var(--text-primary);font-size:0.9rem;">{{ chat.caseType }}</p>
+                                        <p style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">مع المحامي: {{ chat.lawyerName }}</p>
+                                    </div>
+                                    <button onclick="openChatHistory('{{ chat.id }}')" class="btn-ghost" style="padding: 4px 12px; min-height: 34px; font-size: 0.8rem;">
+                                        <i data-lucide="message-square" style="width:14px;height:14px;"></i> عرض المحادثة
+                                    </button>
                                 </div>
-                                <button onclick="openChatHistory('{{ chat.id }}')" class="btn-ghost" style="padding: 4px 12px; min-height: 34px; font-size: 0.8rem;">
-                                    <i data-lucide="message-square" style="width:14px;height:14px;"></i> فتح الدردشة
-                                </button>
+                                {% if chat.description %}
+                                <p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.5;background:#f8fafc;padding:8px;border-radius:8px;margin-top:6px;">{{ chat.description }}</p>
+                                {% endif %}
                             </div>
-                            {% endfor %} {% if not closed_chats %}
-                            <div class="empty-state">
-                                <div class="empty-state-icon">
-                                    <i data-lucide="folder-open" style="width:24px;height:24px;color:var(--text-muted);"></i>
+                            {% endfor %} {% for r in rejected_requests %}
+                            <div class="request-card p-4 border border-red-200 bg-red-50/30 rounded-xl shadow-sm">
+                                <div class="flex justify-between items-center">
+                                    <h4 class="font-bold text-slate-800">{{ r.caseType }}</h4>
+                                    <span class="badge bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs font-bold">مرفوض</span>
                                 </div>
-                                <p style="font-size:0.9rem;">لا يوجد أرشيف متاح</p>
+                                <p class="text-xs text-slate-500 mt-1">{{ r.description }}</p>
                             </div>
+                            {% endfor %} {% if not closed_chats and not rejected_requests %}
+                            <div class="empty-state text-center text-slate-400 py-6">لا يوجد أرشيف متاح حالياً.</div>
                             {% endif %}
                         </div>
                     </section>
                 </div>
             </div>
 
-            <div id="library-tab" class="tab-content">
+            <div id="admin-chat-tab" class="tab-content">
+                <div class="card p-5">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="bg-slate-800 p-3 rounded-xl text-white">
+                            <i data-lucide="shield"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-bold text-slate-800 text-lg">مركز الدعم الفني والإدارة</h2>
+                            <p class="text-xs text-slate-500">تواصل مع إدارة النظام مباشرة وبسرية تامة</p>
+                        </div>
+                    </div>
 
-                <div style="margin-bottom:24px;">
-                    <h2 style="font-size:1.4rem;font-weight:800;color:var(--text-primary);margin-bottom:16px;">المكتبة القانونية</h2>
-                    <div class="search-wrapper">
-                        <input type="text" id="lib-search" onkeyup="filterLibrary()" placeholder="ابحث عن نظام أو لائحة...">
-                        <i data-lucide="search" class="search-icon" style="width:22px;height:22px;"></i>
+                    <div id="admin-chat-display" class="mb-4">
+                        <div class="text-center text-muted my-auto">جاري تحميل رسائل الدعم...</div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <input type="text" id="admin-msg-input" class="form-input flex-1" placeholder="اكتب رسالتك للإدارة هنا..." onkeydown="if(event.key==='Enter') sendMsgToAdmin()">
+                        <button onclick="sendMsgToAdmin()" class="btn-primary">
+                            إرسال 🚀
+                        </button>
                     </div>
                 </div>
+            </div>
 
-                <div id="library-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;">
+            <div id="library-tab" class="tab-content">
+                <div class="mb-6">
+                    <h2 style="font-size:1.4rem;font-weight:800;color:var(--text-primary);margin-bottom:16px;">المكتبة القانونية</h2>
+                    <input type="text" id="lib-search" onkeyup="filterLibrary()" class="form-input" placeholder="ابحث عن نظام أو لائحة...">
+                </div>
+                <div id="library-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     {% for item in library %}
-                    <a href="{{ item.fileURL }}" target="_blank" class="library-item">
-                        <div style="background:var(--primary-ultra-light);border-radius:12px;padding:10px;flex-shrink:0;transition:background 0.2s;" class="lib-icon">
-                            <i data-lucide="file-text" style="width:22px;height:22px;color:var(--primary);"></i>
+                    <a href="{{ item.fileURL }}" target="_blank" class="library-item flex items-center gap-3 p-4 bg-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition">
+                        <div class="bg-blue-50 p-3 rounded-xl text-blue-800">
+                            <i data-lucide="file-text"></i>
                         </div>
-                        <span style="font-weight:700;color:var(--text-primary);font-size:0.9rem;line-height:1.4;" class="lib-title">{{ item.titleAr }}</span>
+                        <span class="font-bold text-sm text-slate-800 lib-title">{{ item.titleAr }}</span>
                     </a>
                     {% endfor %}
                 </div>
@@ -1078,31 +476,25 @@
 
             <div id="profile-tab" class="tab-content">
                 <div style="max-width:460px;margin:0 auto;">
-                    <div class="card" style="padding:clamp(20px,5vw,36px);text-align:center;">
-
-                        <div style="width:88px;height:88px;background:var(--primary-ultra-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;border:3px solid var(--border);">
-                            <i data-lucide="user" style="width:42px;height:42px;color:var(--primary);"></i>
+                    <div class="card p-6 text-center">
+                        <div class="w-20 h-20 bg-slate-100 border border-slate-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="user" class="w-10 h-10 text-slate-700"></i>
                         </div>
-                        <h2 style="font-size:1.4rem;font-weight:800;color:var(--text-primary);">{{ session['name'] }}</h2>
-                        <p style="color:var(--lavender);font-weight:600;margin-top:4px;font-size:0.9rem;">{{ session['role'] }}</p>
+                        <h2 style="font-size:1.4rem;font-weight:800;color:var(--text-primary);" id="profile-name-display">{{ session['name'] }}</h2>
+                        <p style="color:var(--lavender);font-weight:600;margin-top:4px;font-size:0.9rem;">عميل النظام</p>
 
-                        <div style="margin-top:24px;display:flex;flex-direction:column;gap:10px;text-align:right;">
-                            <div class="profile-field">
-                                <span style="font-size:0.85rem;color:var(--text-muted);">البريد الإلكتروني</span>
-                                <span style="font-weight:700;color:var(--text-primary);font-size:0.9rem;">test@law.com</span>
+                        <div class="mt-5 text-right flex flex-col gap-3">
+                            <div class="profile-field flex justify-between items-center p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                                <span class="text-xs text-slate-400">البريد الإلكتروني</span>
+                                <span class="font-bold text-slate-800" id="profile-email">جاري التحميل...</span>
                             </div>
-                            <div class="profile-field">
-                                <span style="font-size:0.85rem;color:var(--text-muted);">حالة الحساب</span>
-                                <span class="badge badge-success">نشط ✓</span>
-                            </div>
-                            <div class="profile-field">
-                                <span style="font-size:0.85rem;color:var(--text-muted);">نوع الحساب</span>
-                                <span style="font-weight:700;color:var(--text-primary);font-size:0.9rem;">{{ session['role'] }}</span>
+                            <div class="profile-field flex justify-between items-center p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                                <span class="text-xs text-slate-400">رقم الهاتف</span>
+                                <span class="font-bold text-slate-800" id="profile-phone">جاري التحميل...</span>
                             </div>
                         </div>
-
-                        <a href="/logout" class="btn-primary" style="margin-top:24px;width:100%;justify-content:center;background:#dc2626;box-shadow:0 4px 14px rgba(220,38,38,0.25);">
-                            <i data-lucide="log-out" style="width:18px;height:18px;"></i> تسجيل الخروج
+                        <a href="/logout" class="btn-primary mt-4 bg-red-600 hover:bg-red-700 w-full flex justify-center py-3 font-bold rounded-xl" style="box-shadow: 0 4px 14px rgba(220,38,38,0.25);">
+                            <i data-lucide="log-out" class="w-5 h-5 ml-2"></i> تسجيل الخروج
                         </a>
                     </div>
                 </div>
@@ -1110,166 +502,97 @@
 
         </main>
 
-        <nav style="display:none;position:fixed;bottom:0;width:100%;background:var(--surface);border-top:1px solid var(--border);padding:4px 8px;z-index:50;box-shadow:0 -4px 20px rgba(0,0,0,0.06);" id="mobile-nav">
-            <div style="display:flex;max-width:1100px;margin:0 auto;">
-                <button onclick="showTab('ai-tab', this)" class="mobile-nav-btn nav-active" data-tab="ai-tab">
-                    <i data-lucide="message-square" style="width:22px;height:22px;"></i>
-                    <span>مساعدك</span>
-                </button>
-                <button onclick="showTab('requests-tab', this)" class="mobile-nav-btn" data-tab="requests-tab">
-                    <i data-lucide="clipboard-list" style="width:22px;height:22px;"></i>
-                    <span>الطلبات</span>
-                </button>
-                <button onclick="showTab('library-tab', this)" class="mobile-nav-btn" data-tab="library-tab">
-                    <i data-lucide="book-open" style="width:22px;height:22px;"></i>
-                    <span>المكتبة</span>
-                </button>
-                <button onclick="showTab('profile-tab', this)" class="mobile-nav-btn" data-tab="profile-tab">
-                    <i data-lucide="user" style="width:22px;height:22px;"></i>
-                    <span>حسابي</span>
-                </button>
-            </div>
+        <nav id="mobile-nav" class="fixed bottom-0 w-full bg-white border-t border-slate-200 p-2 flex md:hidden justify-around z-50">
+            <button onclick="showTab('ai-tab', this)" class="mobile-nav-btn nav-active">
+                <i data-lucide="message-square"></i><span>مساعدك</span>
+            </button>
+            <button onclick="showTab('requests-tab', this)" class="mobile-nav-btn">
+                <i data-lucide="clipboard-list"></i><span>الطلبات</span>
+            </button>
+            <button onclick="showTab('library-tab', this)" class="mobile-nav-btn">
+                <i data-lucide="book-open"></i><span>المكتبة</span>
+            </button>
+            <button onclick="showTab('profile-tab', this); loadActualProfile();" class="mobile-nav-btn">
+                <i data-lucide="user"></i><span>حسابي</span>
+            </button>
         </nav>
+
     </div>
 
-    <button class="fab" onclick="toggleModal('request-modal')" id="fab-btn" style="display:none;" aria-label="طلب محامي مختص">
-        <i data-lucide="plus" style="width:24px;height:24px;"></i>
-    </button>
-
-    <div id="request-modal" onclick="handleModalBackdrop(event, 'request-modal')">
-        <div class="modal-sheet" id="modal-sheet">
-            <div class="modal-handle"></div>
-
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);">
-                <h3 style="font-size:1.2rem;font-weight:800;color:var(--text-primary);">طلب استشارة جديدة</h3>
-                <button onclick="toggleModal('request-modal')" class="btn-icon" style="background:var(--surface-alt);">
-                    <i data-lucide="x" style="width:20px;height:20px;color:var(--text-secondary);"></i>
+    <div id="request-modal" class="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 hidden" onclick="handleModalBackdrop(event, 'request-modal')">
+        <div class="bg-white max-w-md w-full rounded-2xl p-6 shadow-xl animate-scaleIn">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 class="font-bold text-slate-800">طلب استشارة جديدة</h3>
+                <button onclick="toggleModal('request-modal')" class="text-slate-400 hover:text-slate-600">
+                    <i data-lucide="x"></i>
                 </button>
             </div>
-
-            <div style="display:flex;flex-direction:column;gap:18px;">
+            <div class="flex flex-col gap-3">
                 <div>
-                    <label class="form-label">اختر المحامي المختص</label>
-                    <select id="lawyer-select" class="form-input">
-                        <option value="">جاري تحميل المحامين...</option>
-                    </select>
+                    <label class="text-xs font-bold text-slate-700">اختر المحامي المختص</label>
+                    <select id="lawyer-select" class="form-input mt-1"></select>
                 </div>
                 <div>
-                    <label class="form-label">نوع القضية</label>
-                    <select id="case-type" onchange="toggleOtherInput()" class="form-input">
+                    <label class="text-xs font-bold text-slate-700">نوع القضية</label>
+                    <select id="case-type" onchange="toggleOtherInput()" class="form-input mt-1">
                         <option value="قضايا عمالية">قضايا عمالية</option>
                         <option value="قضايا تجارية">قضايا تجارية</option>
                         <option value="أحوال شخصية">أحوال شخصية</option>
                         <option value="أخرى">أخرى</option>
                     </select>
-                    <input type="text" id="other-type" class="form-input" style="display:none;margin-top:10px;" placeholder="اكتب نوع القضية هنا...">
+                    <input type="text" id="other-type" class="form-input mt-2 hidden" placeholder="اكتب نوع القضية هنا...">
                 </div>
                 <div>
-                    <label class="form-label">تفاصيل الطلب</label>
-                    <textarea id="case-desc" rows="4" class="form-input" style="min-height:100px;resize:vertical;" placeholder="يرجى كتابة تفاصيل استشارتك بدقة..."></textarea>
+                    <label class="text-xs font-bold text-slate-700">تفاصيل الطلب</label>
+                    <textarea id="case-desc" rows="3" class="form-input mt-1" placeholder="يرجى كتابة تفاصيل استشارتك بدقة..."></textarea>
                 </div>
-                <button onclick="submitCase()" class="btn-primary" style="width:100%;justify-content:center;font-size:1rem;min-height:52px;">
-                    <i data-lucide="send" style="width:18px;height:18px;"></i>
+                <button onclick="submitCase()" class="btn-primary w-full mt-2">
                     إرسال الطلب الآن
                 </button>
             </div>
         </div>
     </div>
 
-    <div id="chat-history-modal" onclick="handleModalBackdrop(event, 'chat-history-modal')">
-        <div class="modal-sheet" style="height:85vh; display:flex; flex-direction:column; padding-bottom: 24px;">
-            <div class="modal-handle"></div>
-
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);">
-                <div>
-                    <h3 style="font-size:1.15rem;font-weight:800;color:var(--text-primary);">أرشيف الجلسة</h3>
-                    <span class="badge badge-success" style="margin-top:4px;">مغلقة - للمشاهدة فقط</span>
-                </div>
-                <button onclick="toggleModal('chat-history-modal')" class="btn-icon" style="background:var(--surface-alt);">
-                    <i data-lucide="x" style="width:20px;height:20px;color:var(--text-secondary);"></i>
+    <div id="chat-history-modal" class="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 hidden" onclick="handleModalBackdrop(event, 'chat-history-modal')">
+        <div class="bg-white max-w-lg w-full rounded-2xl p-6 flex flex-col shadow-xl animate-scaleIn h-[80vh]">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 class="font-bold text-slate-800">أرشيف المحادثة (للمشاهدة فقط)</h3>
+                <button onclick="toggleModal('chat-history-modal')" class="text-slate-400 hover:text-slate-600">
+                    <i data-lucide="x"></i>
                 </button>
             </div>
-
-            <div id="history-chat-display" style="flex:1; overflow-y:auto; background:var(--surface-alt); border-radius:var(--radius-md); border:1px solid var(--border); padding:16px; display:flex; flex-direction:column; gap:12px;">
-                <div style="text-align:center;color:var(--text-muted);font-size:0.85rem;margin-top:auto;margin-bottom:auto;">
-                    جاري تحميل رسائل الجلسة السابقة...
-                </div>
-            </div>
+            <div id="history-chat-display" class="flex-1"></div>
         </div>
     </div>
 
     <script>
         lucide.createIcons();
+        let adminChatInterval = null;
 
-        // ===== NOTIFICATIONS TOGGLE =====
-        function toggleNotifications(e) {
-            e.stopPropagation();
-            document.getElementById('notifications-dropdown').classList.toggle('show');
-        }
-
-        // إغلاق التنبيهات عند النقر في أي مكان آخر بالصفحة
-        document.addEventListener('click', function(e) {
-            const dropdown = document.getElementById('notifications-dropdown');
-            if (dropdown && dropdown.classList.contains('show')) {
-                dropdown.classList.remove('show');
-            }
-        });
-
-        // ===== RESPONSIVE LAYOUT =====
         function applyLayout() {
             const w = window.innerWidth;
-            const desktopNav = document.getElementById('desktop-nav');
-            const mobileNav = document.getElementById('mobile-nav');
-            const newReqBtn = document.getElementById('new-request-btn');
-            const fabBtn = document.getElementById('fab-btn');
-            const reqGrid = document.getElementById('requests-grid');
-
             if (w >= 768) {
-                desktopNav.style.display = 'flex';
-                mobileNav.style.display = 'none';
-                newReqBtn.style.display = 'inline-flex';
-                if (fabBtn) fabBtn.style.display = 'none';
-                reqGrid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+                document.getElementById('desktop-nav').style.display = 'flex';
+                document.getElementById('mobile-nav').style.display = 'none';
             } else {
-                desktopNav.style.display = 'none';
-                mobileNav.style.display = 'block';
-                newReqBtn.style.display = 'none';
-                // Show FAB only on requests tab
-                reqGrid.style.gridTemplateColumns = '1fr';
+                document.getElementById('desktop-nav').style.display = 'none';
+                document.getElementById('mobile-nav').style.display = 'flex';
             }
         }
         applyLayout();
         window.addEventListener('resize', applyLayout);
 
-        // Show/hide FAB based on current tab
-        function updateFAB(tabId) {
-            const fab = document.getElementById('fab-btn');
-            if (!fab) return;
-            if (window.innerWidth < 768 && tabId === 'requests-tab') {
-                fab.style.display = 'flex';
-            } else {
-                fab.style.display = 'none';
-            }
-        }
-
-        // ===== TAB SWITCHING =====
         function showTab(tabId, btn) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            // Desktop nav
             document.querySelectorAll('.desktop-nav .nav-btn').forEach(b => b.classList.remove('nav-active'));
-            // Mobile nav
             document.querySelectorAll('.mobile-nav-btn').forEach(b => b.classList.remove('nav-active'));
 
             document.getElementById(tabId).classList.add('active');
             if (btn) btn.classList.add('nav-active');
 
-            updateFAB(tabId);
-        }
-
-        // ===== AUTO-RESIZE TEXTAREA =====
-        function autoResize(el) {
-            el.style.height = 'auto';
-            el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+            if (tabId !== 'admin-chat-tab' && adminChatInterval) {
+                clearInterval(adminChatInterval);
+            }
         }
 
         function handleEnter(e) {
@@ -1279,29 +602,24 @@
             }
         }
 
-        // ===== AI CHAT =====
         async function askAI() {
             const input = document.getElementById('ai-input');
             const display = document.getElementById('chat-display');
             const text = input.value.trim();
             if (!text) return;
 
-            // User bubble
             const userDiv = document.createElement('div');
             userDiv.className = 'chat-user';
             userDiv.textContent = text;
             display.appendChild(userDiv);
 
             input.value = '';
-            input.style.height = 'auto';
             display.scrollTop = display.scrollHeight;
 
-            // Loading dots
             const loadingDiv = document.createElement('div');
             loadingDiv.className = 'chat-bot';
-            loadingDiv.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+            loadingDiv.innerHTML = '🔍 جاري كتابة الرد...';
             display.appendChild(loadingDiv);
-            display.scrollTop = display.scrollHeight;
 
             try {
                 const response = await fetch('/ask_ai', {
@@ -1337,86 +655,130 @@
                     });
                 }
             } catch (e) {
-                loadingDiv.innerHTML = '❌ خطأ في الاتصال. يرجى المحاولة مجدداً.';
+                loadingDiv.innerHTML = '❌ خطأ في الاتصال بالسيرفر.';
             }
-            display.scrollTop = display.scrollHeight;
         }
 
         function setQuestion(q) {
-            const input = document.getElementById('ai-input');
-            input.value = q;
-            autoResize(input);
-            input.focus();
+            document.getElementById('ai-input').value = q;
+            document.getElementById('ai-input').focus();
         }
 
-        // ===== MODALS (General Toggle) =====
         function toggleModal(id) {
             const modal = document.getElementById(id);
-            if (modal.classList.contains('open')) {
-                modal.classList.remove('open');
-                document.body.style.overflow = '';
-            } else {
-                modal.classList.add('open');
-                document.body.style.overflow = 'hidden';
-                if (id === 'request-modal') loadLawyers();
+            modal.classList.toggle('hidden');
+            if (id === 'request-modal' && !modal.classList.contains('hidden')) loadLawyers();
+        }
+
+        function handleModalBackdrop(e, id) {
+            if (e.target === document.getElementById(id)) toggleModal(id);
+        }
+
+        async function loadActualProfile() {
+            try {
+                const res = await fetch('/client_profile');
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('profile-name-display').innerText = data.profile.fullName;
+                    document.getElementById('profile-email').innerText = data.profile.email;
+                    document.getElementById('profile-phone').innerText = data.profile.phone;
+                }
+            } catch (e) {
+                console.error('Error fetching profile:', e);
             }
         }
 
-        function handleModalBackdrop(e, modalId) {
-            if (e.target === document.getElementById(modalId)) {
-                toggleModal(modalId);
-            }
-        }
-
-        // ===== ARCHIVED CHAT HISTORY =====
-        function openChatHistory(chatId) {
-            // فتح النافذة المنبثقة للدردشة
+        async function openChatHistory(chatId) {
             toggleModal('chat-history-modal');
-
             const display = document.getElementById('history-chat-display');
+            display.innerHTML = '<div class="text-center text-slate-400 my-auto">جاري جلب سجل الرسائل...</div>';
 
-            // هنا محاكاة لجلب البيانات من قاعدة البيانات بناءً على الـ chatId
-            // يمكنك لاحقاً تبديل هذا الجزء بـ fetch من الـ Backend
-            display.innerHTML = `
-                <div class="chat-user">السلام عليكم، لدي استفسار بخصوص قضية عمالية سابقة وتم إنهاء عقدي بدون سبب مشروع.</div>
-                <div class="chat-bot">وعليكم السلام ورحمة الله. أهلاً بك، هل يمكنك تزويدي بمدة خدمتك في الشركة وهل العقد محدد المدة أم غير محدد؟</div>
-                <div class="chat-user">عقدي غير محدد المدة، ومدة خدمتي 3 سنوات ونصف.</div>
-                <div class="chat-bot">بناءً على المادة 77 من نظام العمل، في حال إنهاء العقد غير محدد المدة لسبب غير مشروع، يحق لك تعويض يقدر بأجر 15 يوماً عن كل سنة من سنوات خدمة العامل، بما لا يقل عن أجر شهرين. بالإضافة طبعاً لمكافأة نهاية الخدمة.</div>
-            `;
+            try {
+                const res = await fetch(`/api/chat/history/${chatId}`);
+                const data = await res.json();
+                if (data.success && data.messages.length > 0) {
+                    display.innerHTML = '';
+                    data.messages.forEach(m => {
+                        const div = document.createElement('div');
+                        div.className = m.senderID === '{{ session["user_id"] }}' ? 'chat-user mb-2' : 'chat-bot mb-2';
+                        div.textContent = m.text || m.message;
+                        display.appendChild(div);
+                    });
+                } else {
+                    display.innerHTML = '<div class="text-center text-slate-400 my-auto">لا توجد رسائل مسجلة.</div>';
+                }
+            } catch (e) {
+                display.innerHTML = '<div class="text-center text-red-400 my-auto">فشل تحميل الأرشيف.</div>';
+            }
         }
 
-        // ===== LIBRARY FILTER =====
-        function filterLibrary() {
-            const input = document.getElementById('lib-search').value.toLowerCase();
-            document.querySelectorAll('#library-list .library-item').forEach(item => {
-                const title = item.querySelector('.lib-title').innerText.toLowerCase();
-                item.style.display = title.includes(input) ? '' : 'none';
-            });
+        async function loadAdminChatHistory() {
+            const display = document.getElementById('admin-chat-display');
+            try {
+                const res = await fetch('/client/admin_chat/history');
+                const data = await res.json();
+                if (data.success) {
+                    display.innerHTML = '';
+                    if (data.messages.length === 0) {
+                        display.innerHTML = '<div class="text-center text-slate-400 my-auto">لا توجد رسائل دعم فني سابقة.</div>';
+                    } else {
+                        data.messages.forEach(m => {
+                            const isMe = m.sender_id === '{{ session["user_id"] }}';
+                            const div = document.createElement('div');
+                            div.className = isMe ? 'chat-user mb-2 self-start' : 'chat-bot mb-2 self-end';
+                            div.textContent = m.message;
+                            display.appendChild(div);
+                        });
+                        display.scrollTop = display.scrollHeight;
+                    }
+                }
+            } catch (e) {
+                console.error('Error loading admin chat:', e);
+            }
+
+            if (!adminChatInterval) {
+                adminChatInterval = setInterval(loadAdminChatHistory, 4000);
+            }
         }
 
-        // ===== CASE TYPE =====
-        function toggleOtherInput() {
-            const select = document.getElementById('case-type');
-            const other = document.getElementById('other-type');
-            other.style.display = select.value === 'أخرى' ? 'block' : 'none';
+        async function sendMsgToAdmin() {
+            const inp = document.getElementById('admin-msg-input');
+            const txt = inp.value.trim();
+            if (!txt) return;
+
+            inp.value = '';
+            try {
+                const res = await fetch('/client/admin_chat/send', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: txt
+                    })
+                });
+                const data = await res.json();
+                if (data.success) loadAdminChatHistory();
+            } catch (e) {
+                alert('فشل في إرسال الرسالة للإدارة.');
+            }
         }
 
-        // ===== LOAD LAWYERS =====
         async function loadLawyers() {
+            const s = document.getElementById('lawyer-select');
+            s.innerHTML = '<option value="">جاري التحميل...</option>';
             try {
                 const res = await fetch('/api/get_lawyers');
                 const lawyers = await res.json();
-                const select = document.getElementById('lawyer-select');
-                select.innerHTML = '<option value="">اختر المحامي...</option>';
+                s.innerHTML = '<option value="">اختر المحامي المختص...</option>';
                 lawyers.forEach(l => {
-                    select.innerHTML += `<option value="${l.id}">${l.name}</option>`;
+                    s.innerHTML += `<option value="${l.id}">${l.name}</option>`;
                 });
             } catch (e) {
-                document.getElementById('lawyer-select').innerHTML = '<option value="">خطأ في تحميل المحامين</option>';
+                s.innerHTML = '<option value="">خطأ في جلب المحامين</option>';
             }
         }
 
-        // ===== SUBMIT CASE =====
         async function submitCase() {
             const data = {
                 lawyerId: document.getElementById('lawyer-select').value,
@@ -1425,7 +787,7 @@
                 description: document.getElementById('case-desc').value
             };
             if (!data.lawyerId || !data.description) {
-                alert('يرجى إكمال جميع البيانات المطلوبة');
+                alert('يرجى إدخال تفاصيل الطلب كاملة واختيار المحامي.');
                 return;
             }
             try {
@@ -1439,18 +801,32 @@
                 const result = await res.json();
                 if (result.success) {
                     toggleModal('request-modal');
-                    alert('تم إرسال طلبك بنجاح!');
+                    alert('تم رفع الطلب بنجاح! سيتم توجيهك للمحامي عند قبوله.');
                     location.reload();
                 }
             } catch (e) {
-                alert('حدث خطأ. يرجى المحاولة مجدداً.');
+                alert('حدث خطأ في تقديم الطلب.');
             }
         }
 
-        // ===== GOOGLE TRANSLATE =====
+        function filterLibrary() {
+            const input = document.getElementById('lib-search').value.toLowerCase();
+            document.querySelectorAll('#library-list .library-item').forEach(item => {
+                const title = item.querySelector('.lib-title').innerText.toLowerCase();
+                item.style.display = title.includes(input) ? '' : 'none';
+            });
+        }
+
+        function toggleOtherInput() {
+            const select = document.getElementById('case-type');
+            const other = document.getElementById('other-type');
+            other.classList.toggle('hidden', select.value !== 'أخرى');
+        }
+
         function loadGoogleTranslate() {
             new google.translate.TranslateElement({
                 pageLanguage: 'ar',
+                includedLanguages: 'en,es,fr',
                 layout: google.translate.TranslateElement.InlineLayout.SIMPLE
             }, 'google_translate_element');
         }

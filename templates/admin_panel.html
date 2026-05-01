@@ -16,7 +16,7 @@
             background: #f1f5f9;
             margin: 0;
         }
-        /* ── إعدادات أداة جوجل للترجمة ── */
+        /* ── إعدادات أداة جوجل للترجمة المتوافقة مع كافة الأجهزة ── */
         
         .goog-te-banner-frame.skiptranslate {
             display: none !important;
@@ -25,20 +25,28 @@
         body {
             top: 0px !important;
         }
-        /* تصميم قائمة جوجل ليناسب شريط الإدارة الغامق */
+        
+        #google_translate_element {
+            display: inline-block;
+            vertical-align: middle;
+            max-width: 140px;
+        }
+        /* تصميم القائمة المنسدلة للغات لتكون متوافقة مع جميع أحجام الشاشات */
         
         #google_translate_element select {
             background-color: transparent;
             color: #ffffff;
-            /* نص أبيض */
             border: 1px solid #ffffff;
-            /* إطار أبيض */
-            padding: 5px 15px;
+            padding: 5px 10px;
             border-radius: 50rem;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             outline: none;
             cursor: pointer;
+            width: 100%;
+            height: auto;
+            text-overflow: ellipsis;
+            word-wrap: normal;
         }
         
         #google_translate_element select option {
@@ -65,6 +73,8 @@
             justify-content: space-between;
             color: white;
             box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1050;
         }
         
         .stat-card {
@@ -116,6 +126,7 @@
             border-radius: 20px;
             padding: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            overflow-x: auto;
         }
         
         .role-badge {
@@ -174,6 +185,42 @@
             display: block;
             margin-bottom: 10px;
         }
+        /* ── Chat Modal Custom Styles ── */
+        
+        .chat-history-box {
+            height: 350px;
+            overflow-y: auto;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .chat-msg {
+            max-width: 75%;
+            padding: 10px 14px;
+            border-radius: 15px;
+            font-size: 13px;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+        
+        .chat-msg.sent {
+            background: #0f172a;
+            color: #fff;
+            align-self: flex-start;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .chat-msg.received {
+            background: #e2e8f0;
+            color: #1e293b;
+            align-self: flex-end;
+            border-bottom-left-radius: 4px;
+        }
     </style>
 </head>
 
@@ -181,12 +228,12 @@
 
     <nav class="admin-nav">
         <div class="fs-4 fw-bold"> لوحة التحكم </div>
-        <div class="d-flex align-items-center gap-3">
+        <div class="d-flex align-items-center gap-2 gap-sm-3 flex-wrap">
 
             <div id="google_translate_element"></div>
 
-            <span>المدير: {{ session['name'] }}</span>
-            <a href="/logout" class="btn btn-outline-light btn-sm">خروج</a>
+            <span class="small d-none d-sm-inline">المدير: {{ session['name'] }}</span>
+            <a href="/logout" class="btn btn-outline-light btn-sm px-3 rounded-pill">خروج</a>
         </div>
     </nav>
 
@@ -242,7 +289,7 @@
                             <td>
                                 <button class="btn btn-success btn-action me-2" onclick="manageLawyer('{{ u.uid }}', 'approve')">قبول ✅</button>
                                 <button class="btn btn-danger btn-action me-2" onclick="manageLawyer('{{ u.uid }}', 'reject')">رفض ❌</button>
-                                <button class="btn btn-secondary btn-action" onclick="startAdminChat('{{ u.uid }}')">دردشة 💬</button>
+                                <button class="btn btn-secondary btn-action" onclick="openAdminChatModal('{{ u.uid }}', '{{ u.fullName }}')">دردشة 💬</button>
                             </td>
                         </tr>
                         {% endfor %}
@@ -281,12 +328,15 @@
                             <td>
                                 {% if u.status == 'active' %}
                                 <span class="text-success small fw-bold">نشط</span> {% elif u.status == 'pending_approval' %}
-                                <span class="status-pending small">بانتظار الموافقة</span> {% else %}
+                                <span class="status-pending small">بانتظار الموافقة</span> {% elif u.status == 'suspended' %}
+                                <span class="text-warning small fw-bold">موقوف مؤقتاً</span> {% else %}
                                 <span class="text-danger small">مرفوض/موقوف</span> {% endif %}
                             </td>
                             <td>
                                 <div class="d-flex gap-2">
-                                    <button class="btn btn-outline-dark btn-sm rounded-pill px-3" onclick="startAdminChat('{{ u.uid }}')">دردشة إدارية 💬</button> {% if u.userType != 'Admin' %}
+                                    <button class="btn btn-outline-dark btn-sm rounded-pill px-3" onclick="openAdminChatModal('{{ u.uid }}', '{{ u.fullName }}')">دردشة إدارية 💬</button> {% if u.userType != 'Admin' %} {% if u.status != 'suspended' %}
+                                    <button class="btn btn-outline-warning btn-sm rounded-pill px-3" onclick="suspendUser('{{ u.uid }}')">تعليق الحساب</button> {% else %}
+                                    <button class="btn btn-outline-success btn-sm rounded-pill px-3" onclick="manageLawyer('{{ u.uid }}', 'approve')">تنشيط</button> {% endif %}
                                     <button class="btn btn-outline-danger btn-sm rounded-pill" onclick="deleteUser('{{ u.uid }}')">حذف</button> {% endif %}
                                 </div>
                             </td>
@@ -349,7 +399,31 @@
         </div>
     </div>
 
+    <div class="modal fade" id="adminChatModal" tabindex="-1" aria-labelledby="adminChatModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 20px;">
+                <div class="modal-header bg-dark text-white" style="border-top-left-radius: 18px; border-top-right-radius: 18px;">
+                    <h6 class="modal-title" id="adminChatModalLabel">دردشة إدارية مع: <span id="chatTargetName">المستخدم</span></h6>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="chatHistory" class="chat-history-box mb-3">
+                        <div class="text-center text-muted my-auto">ابدأ المراسلة الآن...</div>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="adminMsgInput" class="form-control rounded-pill-start" placeholder="اكتب رسالتك هنا..." style="border-top-right-radius: 0; border-bottom-right-radius: 0;">
+                        <button class="btn btn-primary px-4 rounded-pill-end" type="button" onclick="sendAdminMessage()" style="border-top-left-radius: 0; border-bottom-left-radius: 0;">إرسال 🚀</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        let currentChatUser = null;
+        let chatInterval = null;
+
         function showTab(id, btn) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.add('d-none'));
             document.getElementById(id).classList.remove('d-none');
@@ -359,7 +433,7 @@
 
         async function manageLawyer(uid, action) {
             const url = action === 'approve' ? `/admin/approve_lawyer/${uid}` : `/admin/reject_lawyer/${uid}`;
-            if (confirm(`هل أنت متأكد من تنفيذ هذا الإجراء (${action === 'approve' ? 'قبول' : 'رفض'})؟`)) {
+            if (confirm(`هل أنت متأكد من تنفيذ هذا الإجراء (${action === 'approve' ? 'الموافقة/التنشيط' : 'الرفض'})؟`)) {
                 const resp = await fetch(url, {
                     method: 'POST'
                 });
@@ -371,32 +445,104 @@
             }
         }
 
-        async function startAdminChat(uid) {
-            const resp = await fetch('/api/admin_chat/init', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    targetUid: uid
-                })
-            });
-            const data = await resp.json();
-            if (data.success) {
-                window.location.href = `/admin/chat/${data.chatId}`;
-            } else {
-                alert("تعذر فتح المحادثة حالياً");
+        async function suspendUser(uid) {
+            if (confirm("هل أنت متأكد من تعليق حساب هذا المستخدم مؤقتاً؟")) {
+                const resp = await fetch(`/admin/suspend_user/${uid}`, {
+                    method: 'POST'
+                });
+                const data = await resp.json();
+                if (data.success) {
+                    alert("تم تعليق الحساب بنجاح");
+                    location.reload();
+                } else {
+                    alert("خطأ: " + data.msg);
+                }
             }
         }
 
         async function deleteUser(uid) {
-            if (confirm("هل أنت متأكد من حذف هذا المستخدم نهائياً؟")) {
+            if (confirm("هل أنت متأكد من حذف هذا المستخدم نهائياً؟ سيؤدي ذلك لتعليق فوري لجلسة المستخدم.")) {
                 const resp = await fetch(`/delete_user/${uid}`, {
                     method: 'POST'
                 });
                 const data = await resp.json();
                 if (data.success) location.reload();
                 else alert("خطأ: " + data.msg);
+            }
+        }
+
+        // ══════════════════════════════════════════════════════════
+        // منطق الدردشة الإدارية المباشرة
+        // ══════════════════════════════════════════════════════════
+        function openAdminChatModal(uid, name) {
+            currentChatUser = uid;
+            document.getElementById('chatTargetName').innerText = name;
+            document.getElementById('adminMsgInput').value = '';
+
+            const modal = new bootstrap.Modal(document.getElementById('adminChatModal'));
+            modal.show();
+
+            loadChatHistory();
+            if (chatInterval) clearInterval(chatInterval);
+            chatInterval = setInterval(loadChatHistory, 3000); // تحديث دوري تلقائي كل 3 ثوانٍ
+        }
+
+        document.getElementById('adminChatModal').addEventListener('hidden.bs.modal', function() {
+            if (chatInterval) clearInterval(chatInterval);
+            currentChatUser = null;
+        });
+
+        async function loadChatHistory() {
+            if (!currentChatUser) return;
+            try {
+                const resp = await fetch(`/admin/chat/history/${currentChatUser}`);
+                const data = await resp.json();
+                if (data.success) {
+                    const box = document.getElementById('chatHistory');
+                    box.innerHTML = '';
+                    if (data.messages.length === 0) {
+                        box.innerHTML = '<div class="text-center text-muted my-auto">لا توجد رسائل بعد.</div>';
+                    } else {
+                        data.messages.forEach(m => {
+                            const side = (m.sender_id === 'Admin') ? 'sent' : 'received';
+                            const msgEl = document.createElement('div');
+                            msgEl.className = `chat-msg ${side}`;
+                            msgEl.innerText = m.message;
+                            box.appendChild(msgEl);
+                        });
+                        box.scrollTop = box.scrollHeight;
+                    }
+                }
+            } catch (e) {
+                console.error("خطأ في تحميل الدردشة: ", e);
+            }
+        }
+
+        async function sendAdminMessage() {
+            const inp = document.getElementById('adminMsgInput');
+            const msg = inp.value.trim();
+            if (!msg || !currentChatUser) return;
+
+            try {
+                const resp = await fetch('/admin/chat/send', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        receiver_id: currentChatUser,
+                        message: msg
+                    })
+                });
+                const data = await resp.json();
+                if (data.success) {
+                    inp.value = '';
+                    loadChatHistory();
+                } else {
+                    alert("تعذر إرسال الرسالة: " + data.msg);
+                }
+            } catch (e) {
+                console.error("خطأ في إرسال الرسالة:", e);
             }
         }
     </script>

@@ -3,22 +3,141 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>لوحة المحامي — نظام المحامي الذكي</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>لوحة المحامي — النظام القانوني الذكي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
+         :root {
+            --primary: #064e3b;
+            --primary-light: #065f46;
+            --primary-ultra-light: #ecfdf5;
+            --gold: #c9a84c;
+            --border: #e2e8f0;
+            --surface: #ffffff;
+            --text-primary: #1a202c;
+            --text-secondary: #64748b;
+        }
+        
         * {
-            font-family: 'Tajawal', sans-serif;
+            box-sizing: border-box;
         }
         
         body {
-            background: #f4f7f6;
-            margin: 0;
-            color: #334155;
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f8fafc;
+            min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
         }
-        /* ── إعدادات أداة جوجل للترجمة ── */
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeSlideIn 0.3s ease;
+        }
+        
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .desktop-nav .nav-btn {
+            position: relative;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 8px 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .desktop-nav .nav-btn.nav-active {
+            color: #fff;
+        }
+        
+        .desktop-nav .nav-btn.nav-active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            right: 0;
+            left: 0;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 2px;
+        }
+        
+        .mobile-nav-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #94a3b8;
+            transition: color 0.2s;
+        }
+        
+        .mobile-nav-btn.nav-active {
+            color: var(--primary);
+        }
+        
+        .card {
+            background: var(--surface);
+            border-radius: 1.25rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        
+        .distinctive-notes {
+            background: #fffbeb;
+            border-right: 4px solid #f59e0b;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        
+        #admin-chat-display {
+            background: #f1f5f9;
+            border-radius: 12px;
+            height: 350px;
+            overflow-y: auto;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        #google_translate_element select {
+            background-color: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 4px 8px;
+            font-size: 0.8rem;
+            outline: none;
+        }
+        
+        .goog-te-gadget {
+            color: transparent !important;
+            font-size: 0px !important;
+        }
+        
+        .goog-te-gadget img {
+            display: none !important;
+        }
         
         .goog-te-banner-frame.skiptranslate {
             display: none !important;
@@ -27,269 +146,338 @@
         body {
             top: 0px !important;
         }
-        /* تصميم قائمة جوجل ليناسب شريط المحامي الأخضر */
-        
-        #google_translate_element select {
-            background-color: transparent;
-            color: #ffffff;
-            border: 1px solid #ffffff;
-            padding: 5px 15px;
-            border-radius: 50rem;
-            font-size: 14px;
-            font-weight: 600;
-            outline: none;
-            cursor: pointer;
-        }
-        
-        #google_translate_element select option {
-            color: #064e3b;
-            background-color: white;
-        }
-        
-        .goog-te-gadget {
-            color: transparent !important;
-            font-size: 0px;
-        }
-        
-        .goog-logo-link {
-            display: none !important;
-        }
-        /* ────────────────────────────── */
-        
-        .lawyer-nav {
-            background: linear-gradient(135deg, #064e3b, #065f46);
-            padding: 0 32px;
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            color: white;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .section-card {
-            background: #fff;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-            border: 1px solid #e2e8f0;
-            min-height: 450px;
-        }
-        
-        .section-title {
-            font-weight: 800;
-            font-size: 20px;
-            color: #064e3b;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .tab-btn {
-            padding: 12px 25px;
-            border-radius: 12px;
-            border: 1px solid #d1d5db;
-            background: #fff;
-            color: #4b5563;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-            white-space: nowrap;
-        }
-        
-        .tab-btn.active {
-            background: #059669;
-            color: #fff;
-            border-color: #059669;
-        }
-        
-        .case-card {
-            border: 1px solid #e2e8f0;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 15px;
-            transition: 0.3s;
-            background: #fff;
-        }
-        
-        .case-card:hover {
-            border-color: #059669;
-            transform: translateY(-3px);
-        }
-        
-        .ai-chat-container {
-            background: #fff;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid #e2e8f0;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .chat-display {
-            height: 500px;
-            overflow-y: auto;
-            padding: 20px;
-            background: #f8fafc;
-        }
-        
-        .ai-msg {
-            background: white;
-            border: 1px solid #e2e8f0;
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-        
-        .user-msg {
-            background: #059669;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 15px;
-            align-self: flex-end;
-            margin-bottom: 15px;
-            max-width: 80%;
-            font-size: 14px;
-        }
-        
-        .archive-badge {
-            background: #64748b;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 11px;
-        }
     </style>
 </head>
 
-<body>
-    <script>
-        // السماح بالدخول فقط للمحامي "النشط" أو "المدير"
-        const role = "{{ session['role'] }}";
-        const status = "{{ session['status'] }}";
+<body class="text-right">
 
-        if (!(role === "Admin" || (role === "Lawyer" && status === "active"))) {
-            // توجيه أي شخص آخر (بما فيهم المحامي المعلق) إلى صفحة العميل
-            window.location.href = "/";
-        }
-    </script>
+    <div class="min-h-screen flex flex-col">
+        <header class="bg-[#064e3b] text-white sticky top-0 z-50 shadow-lg">
+            <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="bg-white/10 p-2 rounded-lg">
+                        <i data-lucide="gavel" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-extrabold text-sm md:text-base truncate">الأستاذ: {{ session['name'] }}</h1>
+                        <div id="google_translate_element"></div>
+                    </div>
+                </div>
 
-    <nav class="lawyer-nav">
-        <div class="fs-5 fw-bold">⚖️ بوابة المحامي</div>
-        <div class="d-flex align-items-center gap-3">
+                <nav class="desktop-nav hidden md:flex gap-2" id="desktop-nav">
+                    <button onclick="showTab('pending-tab', this)" class="nav-btn nav-active">الطلبات</button>
+                    <button onclick="showTab('active-tab', this)" class="nav-btn">الجلسات</button>
+                    <button onclick="showTab('archive-tab', this)" class="nav-btn">الأرشيف</button>
+                    <button onclick="showTab('library-tab', this)" class="nav-btn">المكتبة</button>
+                    <button onclick="showTab('ai-tab', this)" class="nav-btn">المساعد</button>
+                </nav>
 
-            <div id="google_translate_element"></div>
+                <div class="flex items-center gap-2">
+                    <button onclick="showTab('admin-chat-tab', null); loadAdminChatHistory();" class="bg-white/10 hover:bg-white/20 p-2 rounded-lg transition" title="مراسلة الإدارة">
+                        <i data-lucide="shield" class="w-5 h-5"></i>
+                    </button>
+                    <a href="/logout" class="bg-red-500/20 hover:bg-red-500/40 p-2 rounded-lg transition" title="تسجيل الخروج">
+                        <i data-lucide="log-out" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+        </header>
 
-            <span>الأستاذ: {{ session['name'] }}</span>
-            <a href="/logout" class="btn btn-outline-light btn-sm rounded-pill">خروج</a>
-        </div>
-    </nav>
+        <main class="flex-1 max-w-7xl mx-auto w-full p-4 pb-24 md:pb-8">
 
-    <div class="container py-4">
-        <div class="d-flex gap-2 mb-4 overflow-auto pb-2">
-            <button class="tab-btn active" onclick="showTab('pending-cases', this)">الطلبات ({{ pending|length }})</button>
-            <button class="tab-btn" onclick="showTab('active-cases', this)">الجلسات النشطة ({{ active|length }})</button>
-            <button class="tab-btn" onclick="showTab('archived-cases', this)">الأرشيف ({{ closed_archived|length }})</button>
-            <button class="tab-btn" onclick="showTab('ai-assistant', this)">المساعد الذكي </button>
-        </div>
-
-        <div id="pending-cases" class="tab-content">
-            <div class="section-card">
-                <div class="section-title">📩 طلبات استشارة جديدة</div>
-                <div class="row g-3">
+            <div id="pending-tab" class="tab-content active">
+                <div class="flex items-center gap-2 mb-6">
+                    <i data-lucide="mail-plus" class="text-emerald-600"></i>
+                    <h2 class="text-xl font-extrabold text-slate-800">طلبات جديدة بانتظارك ({{ pending|length }})</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {% for r in pending %}
-                    <div class="col-md-6">
-                        <div class="case-card">
-                            <div class="badge bg-warning text-dark mb-2">طلب معلق</div>
-                            <h6 class="fw-bold">{{ r.caseType }}</h6>
-                            <div class="small text-muted mb-2">الموكل: {{ r.clientName }}</div>
-                            <p class="small text-secondary text-truncate">{{ r.description }}</p>
-                            <button class="btn btn-success btn-sm w-100 rounded-pill fw-bold" onclick="acceptCase('{{ r.id }}')">قبول وبدء الجلسة ✅</button>
+                    <div class="card p-5">
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-xs font-bold">طلب معلق</span>
+                        </div>
+                        <h3 class="font-extrabold text-slate-800 text-lg mb-1">{{ r.caseType }}</h3>
+                        <p class="text-sm text-emerald-700 font-bold mb-3">العميل: {{ r.clientName }}</p>
+                        <div class="bg-slate-50 p-3 rounded-xl mb-4">
+                            <p class="text-xs text-slate-600 leading-relaxed">{{ r.description }}</p>
+                        </div>
+
+                        {% if r.lawyer_notes %}
+                        <div class="distinctive-notes">
+                            <p class="text-[10px] font-bold text-amber-800 mb-1">📌 ملاحظتك السابقة:</p>
+                            <p class="text-xs text-amber-900">{{ r.lawyer_notes }}</p>
+                        </div>
+                        {% endif %}
+
+                        <div class="mt-4">
+                            <textarea id="notes-pending-{{ r.id }}" class="w-full text-xs p-3 rounded-xl border border-slate-200 bg-white mb-2" rows="2" placeholder="اكتب ملاحظاتك الشخصية هنا...">{{ r.lawyer_notes if r.lawyer_notes else '' }}</textarea>
+                            <button onclick="saveLawyerNotes('{{ r.id }}', 'notes-pending-{{ r.id }}')" class="w-full bg-slate-800 text-white text-[10px] py-2 rounded-lg font-bold">حفظ الملاحظة 💾</button>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 mt-5">
+                            <button onclick="acceptCase('{{ r.id }}')" class="py-3 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition">قبول ✓</button>
+                            <button onclick="rejectCase('{{ r.id }}')" class="py-3 bg-red-50 text-red-600 border border-red-100 rounded-xl font-bold hover:bg-red-100 transition">رفض ❌</button>
                         </div>
                     </div>
                     {% endfor %} {% if not pending %}
-                    <div class="text-center py-5 text-muted">لا توجد طلبات جديدة حالياً.</div>
+                    <div class="col-span-full py-20 text-center text-slate-400 bg-white rounded-2xl border border-dashed border-slate-300">
+                        <i data-lucide="inbox" class="w-12 h-12 mx-auto mb-3 opacity-20"></i>
+                        <p class="font-bold">لا توجد طلبات جديدة حالياً</p>
+                    </div>
                     {% endif %}
                 </div>
             </div>
-        </div>
 
-        <div id="active-cases" class="tab-content d-none">
-            <div class="section-card">
-                <div class="section-title">💬 محادثات جارية مع الموكلين</div>
-                <div class="row g-3">
+            <div id="active-tab" class="tab-content">
+                <div class="flex items-center gap-2 mb-6">
+                    <i data-lucide="messages-square" class="text-emerald-600"></i>
+                    <h2 class="text-xl font-extrabold text-slate-800">محادثات جارية ({{ active|length }})</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {% for c in active %}
-                    <div class="col-md-4">
-                        <div class="case-card border-success">
-                            <h6 class="fw-bold">{{ c.caseType }}</h6>
-                            <small class="text-muted d-block mb-3">الموكل: {{ c.clientName }}</small>
-                            <a href="/chat/{{ c.id }}" class="btn btn-primary btn-sm w-100 rounded-pill fw-bold">دخول غرفة الدردشة 💬</a>
+                    <div class="card p-5 border-r-4 border-r-emerald-500">
+                        <h3 class="font-extrabold text-slate-800 mb-1">{{ c.caseType }}</h3>
+                        <p class="text-xs text-slate-500 mb-4 font-bold">الموكل: {{ c.clientName }}</p>
+
+                        {% if c.lawyer_notes %}
+                        <div class="distinctive-notes">
+                            <p class="text-[10px] font-bold text-amber-800 mb-1">📝 ملاحظات المتابعة:</p>
+                            <p class="text-xs text-amber-900">{{ c.lawyer_notes }}</p>
                         </div>
+                        {% endif %}
+
+                        <div class="mb-4">
+                            <textarea id="notes-active-{{ c.id }}" class="w-full text-xs p-3 rounded-xl border border-slate-200 bg-white" rows="2" placeholder="تحديث ملاحظات الجلسة...">{{ c.lawyer_notes if c.lawyer_notes else '' }}</textarea>
+                            <button onclick="saveLawyerNotes('{{ c.id }}', 'notes-active-{{ c.id }}')" class="mt-2 w-full bg-emerald-800 text-white text-[10px] py-2 rounded-lg font-bold transition">تحديث الملاحظات 💾</button>
+                        </div>
+
+                        <a href="/chat/{{ c.id }}" class="flex items-center justify-center gap-2 w-full py-3 bg-[#064e3b] text-white rounded-xl font-bold hover:bg-black transition">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i> دخول المحادثة
+                        </a>
                     </div>
                     {% endfor %} {% if not active %}
-                    <div class="text-center py-5 text-muted">لا توجد محادثات نشطة حالياً.</div>
+                    <div class="col-span-full py-20 text-center text-slate-400 bg-white rounded-2xl border border-dashed border-slate-300">
+                        <i data-lucide="message-square-off" class="w-12 h-12 mx-auto mb-3 opacity-20"></i>
+                        <p class="font-bold">لا توجد محادثات نشطة حالياً</p>
+                    </div>
                     {% endif %}
                 </div>
             </div>
-        </div>
 
-        <div id="archived-cases" class="tab-content d-none">
-            <div class="section-card">
-                <div class="section-title">📂 سجل الاستشارات المنتهية</div>
-                <div class="row g-3">
+            <div id="archive-tab" class="tab-content">
+                <div class="flex items-center gap-2 mb-6">
+                    <i data-lucide="archive" class="text-slate-600"></i>
+                    <h2 class="text-xl font-extrabold text-slate-800">سجل الاستشارات المؤرشفة</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {% for c in closed_archived %}
-                    <div class="col-md-4">
-                        <div class="case-card border-secondary">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="archive-badge">مؤرشفة 📁</span>
-                            </div>
-                            <h6 class="fw-bold">{{ c.caseType }}</h6>
-                            <small class="text-muted d-block mb-3">الموكل: {{ c.clientName }}</small>
-                            <a href="/chat/{{ c.id }}" class="btn btn-outline-secondary btn-sm w-100 rounded-pill">مراجعة المحادثة</a>
+                    <div class="card p-5 bg-slate-50/50">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="bg-slate-200 text-slate-600 px-3 py-1 rounded-full text-[10px] font-bold">منتهي 📁</span>
+                            <a href="/chat/{{ c.id }}" class="text-emerald-600 text-xs font-bold hover:underline">مراجعة المحادثة</a>
+                        </div>
+                        <h3 class="font-extrabold text-slate-800 mb-1">{{ c.caseType }}</h3>
+                        <p class="text-xs text-slate-500 mb-3 font-bold">الموكل: {{ c.clientName }}</p>
+
+                        <div class="bg-white border border-slate-200 p-3 rounded-xl mb-3">
+                            <p class="text-[10px] text-slate-400 font-bold mb-1">📝 وصف العميل الأصلي:</p>
+                            <p class="text-xs text-slate-600 italic">"{{ c.description if c.description else 'لا يوجد وصف' }}"</p>
+                        </div>
+
+                        {% if c.lawyer_notes %}
+                        <div class="distinctive-notes">
+                            <p class="text-[10px] font-bold text-amber-800 mb-1">📒 ملاحظاتك النهائية:</p>
+                            <p class="text-xs text-amber-900">{{ c.lawyer_notes }}</p>
+                        </div>
+                        {% endif %}
+
+                        <div class="mt-2">
+                            <textarea id="notes-archive-{{ c.id }}" class="w-full text-xs p-3 rounded-xl border border-slate-200 bg-white" rows="2" placeholder="عدل ملاحظات الأرشفة...">{{ c.lawyer_notes if c.lawyer_notes else '' }}</textarea>
+                            <button onclick="saveLawyerNotes('{{ c.id }}', 'notes-archive-{{ c.id }}')" class="mt-2 w-full bg-slate-400 text-white text-[10px] py-2 rounded-lg font-bold">حفظ تعديل الأرشيف 💾</button>
                         </div>
                     </div>
-                    {% endfor %} {% if not closed_archived %}
-                    <div class="text-center py-5 text-muted">لا توجد سجلات مؤرشفة حالياً.</div>
-                    {% endif %}
+                    {% endfor %}
                 </div>
             </div>
-        </div>
 
-        <div id="ai-assistant" class="tab-content d-none">
-            <div class="ai-chat-container">
-                <div id="lawyerChatDisplay" class="chat-display d-flex flex-column">
-                    <div class="ai-msg">مرحباً سعادة المحامي. يمكنني مساعدتك في البحث داخل 56 نظاماً سعودياً عبر روابط هيئة الخبراء. اسألني.</div>
+            <div id="library-tab" class="tab-content">
+                <div class="mb-6">
+                    <h2 class="text-xl font-extrabold text-slate-800 mb-4">المكتبة القانونية (أنظمة المملكة العربية السعودية)</h2>
+                    <input type="text" id="lib-search" onkeyup="filterLibrary()" class="w-full p-4 border border-slate-200 rounded-2xl outline-none focus:border-[#064e3b]" placeholder="ابحث عن نظام أو لائحة...">
                 </div>
-                <div class="p-3 border-top d-flex gap-2">
-                    <input type="text" id="lawyerAiInput" class="form-control rounded-pill" placeholder="اسأل عن نظام أو مادة قانونية..." onkeydown="if(event.key==='Enter')askLawyerAI()">
-                    <button class="btn btn-success rounded-pill px-4" onclick="askLawyerAI()" id="btnAsk">بحث 🔍</button>
+                <div id="library-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    {% for item in library %}
+                    <a href="{{ item.fileURL }}" target="_blank" class="library-item flex items-center gap-3 p-4 bg-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition">
+                        <div class="bg-emerald-50 p-3 rounded-xl text-emerald-800">
+                            <i data-lucide="file-text"></i>
+                        </div>
+                        <span class="font-bold text-sm text-slate-800 lib-title">{{ item.titleAr }}</span>
+                    </a>
+                    {% endfor %}
                 </div>
             </div>
-        </div>
+
+            <div id="admin-chat-tab" class="tab-content">
+                <div class="card p-6">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="bg-slate-800 p-3 rounded-xl text-white">
+                            <i data-lucide="shield"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-extrabold text-slate-800 text-lg">مركز الدعم الفني والإدارة</h2>
+                            <p class="text-xs text-slate-500">تواصل مع إدارة النظام مباشرة وبسرية تامة</p>
+                        </div>
+                    </div>
+                    <div id="admin-chat-display" class="mb-4">
+                        <div class="text-center text-muted my-auto">جاري تحميل رسائل الدعم...</div>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="admin-msg-input" class="flex-1 p-3 border border-slate-200 rounded-xl text-sm outline-none" placeholder="اكتب رسالتك للإدارة هنا..." onkeydown="if(event.key==='Enter') sendMsgToAdmin()">
+                        <button onclick="sendMsgToAdmin()" class="bg-[#064e3b] text-white px-6 py-3 rounded-xl font-bold transition hover:bg-black">إرسال 🚀</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="ai-tab" class="tab-content">
+                <div class="card overflow-hidden flex flex-col h-[600px]">
+                    <div class="bg-emerald-900 p-4 text-white flex items-center gap-3">
+                        <i data-lucide="sparkles"></i>
+                        <h3 class="font-bold text-sm">مساعد المحامي الذكي (AI)</h3>
+                    </div>
+                    <div id="lawyerChatDisplay" class="flex-1 overflow-y-auto p-5 bg-slate-50 flex flex-col gap-4">
+                        <div class="bg-white border border-slate-200 p-4 rounded-2xl max-w-[85%] self-start text-sm shadow-sm leading-relaxed">
+                            مرحباً سعادة المحامي. كيف يمكنني مساعدتك اليوم؟
+                        </div>
+                    </div>
+                    <div class="p-4 border-t bg-white flex gap-2">
+                        <input type="text" id="lawyerAiInput" class="flex-1 border border-slate-200 rounded-xl px-4 text-sm outline-none" placeholder="اسأل عن أي نظام قانوني..." onkeydown="if(event.key==='Enter')askLawyerAI()">
+                        <button onclick="askLawyerAI()" id="btnAsk" class="bg-emerald-600 text-white px-6 py-2 rounded-xl font-bold transition hover:bg-emerald-700">بحث 🔍</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <nav id="mobile-nav" class="fixed bottom-0 w-full bg-white border-t border-slate-200 p-2 flex md:hidden justify-around z-50 shadow-lg">
+            <button onclick="showTab('pending-tab', this)" class="mobile-nav-btn nav-active">
+                <i data-lucide="mail"></i><span>الطلبات</span>
+            </button>
+            <button onclick="showTab('active-tab', this)" class="mobile-nav-btn">
+                <i data-lucide="message-circle"></i><span>النشطة</span>
+            </button>
+            <button onclick="showTab('archive-tab', this)" class="mobile-nav-btn">
+                <i data-lucide="archive"></i><span>الأرشيف</span>
+            </button>
+            <button onclick="showTab('library-tab', this)" class="mobile-nav-btn">
+                <i data-lucide="book-open"></i><span>المكتبة</span>
+            </button>
+        </nav>
     </div>
 
     <script>
+        lucide.createIcons();
+        let adminChatInterval = null;
+
         function showTab(id, btn) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('d-none'));
-            document.getElementById(id).classList.remove('d-none');
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.nav-btn, .mobile-nav-btn').forEach(b => b.classList.remove('nav-active'));
+            if (btn) btn.classList.add('nav-active');
+
+            if (id !== 'admin-chat-tab' && adminChatInterval) {
+                clearInterval(adminChatInterval);
+                adminChatInterval = null;
+            }
         }
 
         async function acceptCase(id) {
-            if (confirm("هل تود قبول هذا الطلب؟ سيتم فتح غرفة دردشة فورية مع العميل.")) {
+            if (confirm("هل تود قبول هذا الطلب؟")) {
                 const resp = await fetch(`/accept_case/${id}`, {
                     method: 'POST'
                 });
-                const result = await resp.json();
-                if (result.success) {
-                    location.reload();
-                } else {
-                    alert("فشل في قبول الطلب، حاول مرة أخرى.");
+                if ((await resp.json()).success) location.reload();
+            }
+        }
+
+        async function rejectCase(id) {
+            if (confirm("هل أنت متأكد من رفض الطلب؟")) {
+                const resp = await fetch(`/reject_case/${id}`, {
+                    method: 'POST'
+                });
+                if ((await resp.json()).success) location.reload();
+            }
+        }
+
+        async function saveLawyerNotes(id, textareaId) {
+            const notesText = document.getElementById(textareaId).value;
+            try {
+                const resp = await fetch(`/save_lawyer_notes/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        lawyer_notes: notesText
+                    })
+                });
+                if ((await resp.json()).success) alert("تم حفظ الملاحظة بنجاح! 💾");
+            } catch (e) {
+                alert("خطأ في الاتصال");
+            }
+        }
+
+        function filterLibrary() {
+            const input = document.getElementById('lib-search').value.toLowerCase();
+            document.querySelectorAll('#library-list .library-item').forEach(item => {
+                const title = item.querySelector('.lib-title').innerText.toLowerCase();
+                item.style.display = title.includes(input) ? '' : 'none';
+            });
+        }
+
+        async function loadAdminChatHistory() {
+            const display = document.getElementById('admin-chat-display');
+            try {
+                const res = await fetch('/client/admin_chat/history');
+                const data = await res.json();
+                if (data.success) {
+                    display.innerHTML = '';
+                    if (data.messages.length === 0) {
+                        display.innerHTML = '<div class="text-center text-slate-400 my-auto">لا توجد رسائل دعم سابقة.</div>';
+                    } else {
+                        data.messages.forEach(m => {
+                            const isMe = m.sender_id === '{{ session["user_id"] }}';
+                            const div = document.createElement('div');
+                            div.className = isMe ? 'bg-[#064e3b] text-white p-3 rounded-2xl self-start max-w-[80%] text-xs' : 'bg-white border border-slate-200 p-3 rounded-2xl self-end max-w-[80%] text-xs';
+                            div.textContent = m.message;
+                            display.appendChild(div);
+                        });
+                        display.scrollTop = display.scrollHeight;
+                    }
                 }
+            } catch (e) {
+                console.error(e);
+            }
+            if (!adminChatInterval) adminChatInterval = setInterval(loadAdminChatHistory, 5000);
+        }
+
+        async function sendMsgToAdmin() {
+            const inp = document.getElementById('admin-msg-input');
+            const txt = inp.value.trim();
+            if (!txt) return;
+            inp.value = '';
+            try {
+                await fetch('/client/admin_chat/send', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: txt
+                    })
+                });
+                loadAdminChatHistory();
+            } catch (e) {
+                alert('خطأ في الإرسال');
             }
         }
 
@@ -300,13 +488,13 @@
             const q = input.value.trim();
             if (!q || btn.disabled) return;
 
-            display.innerHTML += `<div class="user-msg">${q}</div>`;
+            display.innerHTML += `<div class="bg-emerald-600 text-white p-3 rounded-2xl max-w-[80%] self-end text-sm shadow-sm">${q}</div>`;
             input.value = "";
             btn.disabled = true;
 
             const botMsgDiv = document.createElement('div');
-            botMsgDiv.className = "ai-msg";
-            botMsgDiv.innerHTML = "🔍 جاري فحص الأنظمة السعودية وجلب المواد...";
+            botMsgDiv.className = "bg-white border border-slate-200 p-4 rounded-2xl max-w-[85%] self-start text-sm shadow-sm leading-relaxed";
+            botMsgDiv.innerHTML = "🔍 جاري الفحص...";
             display.appendChild(botMsgDiv);
             display.scrollTop = display.scrollHeight;
 
@@ -320,47 +508,39 @@
                         question: q
                     })
                 });
-
                 const reader = response.body.getReader();
                 const decoder = new TextDecoder();
                 let fullText = "";
-
                 while (true) {
                     const {
                         value,
                         done
                     } = await reader.read();
                     if (done) break;
-
                     const chunk = decoder.decode(value);
                     const lines = chunk.split('\n');
-
                     for (const line of lines) {
                         if (line.startsWith('data: ')) {
-                            try {
-                                const data = JSON.parse(line.substring(6));
-                                if (data.text) {
-                                    fullText += data.text;
-                                    botMsgDiv.innerHTML = marked.parse(fullText);
-                                    display.scrollTop = display.scrollHeight;
-                                }
-                            } catch (e) {}
+                            const data = JSON.parse(line.substring(6));
+                            if (data.text) {
+                                fullText += data.text;
+                                botMsgDiv.innerHTML = marked.parse(fullText);
+                                display.scrollTop = display.scrollHeight;
+                            }
                         }
                     }
                 }
             } catch (e) {
-                botMsgDiv.innerHTML = "❌ حدث خطأ في الاتصال بالسيرفر.";
+                botMsgDiv.innerHTML = "❌ خطأ في الاتصال.";
             } finally {
                 btn.disabled = false;
             }
         }
-    </script>
 
-    <script type="text/javascript">
         function loadGoogleTranslate() {
             new google.translate.TranslateElement({
                 pageLanguage: 'ar',
-                includedLanguages: 'en,es,fr,ar',
+                includedLanguages: 'en,es,fr',
                 layout: google.translate.TranslateElement.InlineLayout.SIMPLE
             }, 'google_translate_element');
         }
